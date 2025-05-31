@@ -5,16 +5,25 @@ use App\Http\Controllers\InfoPostulanteController;
 use App\Http\Controllers\PostulanteLoginController;
 use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
+use App\Http\Controllers\LibroReclamacionesController;
 use App\Http\Controllers\PermisoPostulanteController;
+use FontLib\Table\Type\name;
+
+/*
+|--------------------------------------------------------------------------
+| Rutas para Libro de reclamciones
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [LibroReclamacionesController::class, 'registro'])->name('libroreclamaciones.registro');
 
 /*
 |--------------------------------------------------------------------------
 | Rutas de Autenticación
 |--------------------------------------------------------------------------
 */
-Route::get('/', fn() => redirect()->route('login.postulante'))->name('auth.login');
+// Route::get('/', fn() => redirect()->route('login.postulante'))->name('auth.login') ;
 
-Route::get('/login-postulante', [PostulanteLoginController::class, 'form'])->name('login.postulante');
+Route::get('/login-postulante', [PostulanteLoginController::class, 'form'])->name('login.postulante')  ->name('auth.login');
 Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->name('login.postulante.submit');
 Route::post('/logout', [PostulanteLoginController::class, 'logout'])->name('logout');
 
@@ -82,10 +91,3 @@ Route::middleware('auth.postulante')->group(function () {
 */
 Route::get('/crear-postulante', [CreatePostulanteController::class, 'mostrarFormulario'])->name('register.registro');
 Route::post('/crear-postulante', [CreatePostulanteController::class, 'registrarPostulante']);
-
-/*
-|--------------------------------------------------------------------------
-| Rutas para Libro de reclamciones
-|--------------------------------------------------------------------------
-*/
-

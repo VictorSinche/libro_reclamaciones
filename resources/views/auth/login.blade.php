@@ -2,15 +2,10 @@
 
 <!-- fondo con imagen -->
 <div class="relative flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat" style="background-image:url('uma/img/of_uma.jpeg')">
-
-  <!-- capa superpuesta con blur y tinte rojo -->
   <div class="absolute inset-0 bg-red-900/30 backdrop-blur-sm"></div>
-
-  <!-- contenido principal (formulario) -->
   <div class="relative z-10 rounded-xl bg-black bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
     <div class="text-white">
       <div class="mb-8 flex flex-col items-center">
-        {{-- <img src="uma/img/logo.png" width="150" alt="" /> --}}
         <h1 class="mb-2 text-2xl font-bold">Admisión</h1>
         <span class="text-gray-300 font">Introducir datos de acceso</span>
       </div>
