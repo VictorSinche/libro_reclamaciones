@@ -1,23 +1,24 @@
 <h2 class="text-lg font-semibold text-[#880E4F] mb-4 mt-6 uppercase">
   Identificación del reclamante
 </h2>
+
 <div>
-    <label class="block text-md font-semibold mb-1">3. Tipo de reclamante <span class="text-red-700">*</span></label>
+    <label class="block text-md font-normal mb-1">3. Tipo de reclamante <span class="text-red-700">*</span></label>
     <div class="mt-3 space-y-2">
         <label class="flex items-center space-x-2">
-        <input type="radio" name="tipo" value="reclamo" class="form-radio text-red-600">
-        <span>Producto</span>
-    </label>
-    <label class="flex items-center space-x-2">
-        <input type="radio" name="tipo" value="queja" class="form-radio text-red-600">
-        <span>Servicio</span>
-    </label>
+            <input type="radio" name="tipo_reclamante" value="persona_natural" class="form-radio text-red-600">
+            <span>Persona Natural</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="radio" name="tipo_reclamante" value="persona_juridica" class="form-radio text-red-600">
+            <span>Persona Jurídica</span>
+        </label>
     </div>
 </div>
 
-<!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: Nombres y apellidos -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
+    <label for="nombre_apellido" class="block text-md font-normal text-gray-800 mb-1">
         4. Nombres y apellidos <span class="text-red-700">*</span>
     </label>
 
@@ -32,140 +33,143 @@
 </div>
 
 <div>
-    <label class="block text-md font-semibold mb-1">5. Tipo documento <span class="text-red-700">*</span></label>
+    <label class="block text-md font-normal mb-1">5. Tipo documento <span class="text-red-700">*</span></label>
     <div class="mt-3 space-y-2">
         <label class="flex items-center space-x-2">
-        <input type="radio" name="tipo" value="reclamo" class="form-radio text-red-600">
-        <span>Código de estudiante</span>
-    </label>
-    <label class="flex items-center space-x-2">
-        <input type="radio" name="tipo" value="queja" class="form-radio text-red-600">
-        <span>DNI</span>
-    </label>
-    <label class="flex items-center space-x-2">
-        <input type="radio" name="tipo" value="queja" class="form-radio text-red-600">
-        <span>Carné de extranjería|</span>
-    </label>
-    <label class="flex items-center space-x-2">
-        <input type="radio" name="tipo" value="queja" class="form-radio text-red-600">
-        <span>RUC</span>
-    </label>
-    <label class="flex items-center space-x-2">
-        <input type="radio" name="tipo" value="queja" class="form-radio text-red-600">
-        <span>Pasaporte</span>
-    </label>
+            <input type="radio" name="tipo_documento" value="codigo_estudiante" class="form-radio text-red-600">
+            <span>Código de estudiante</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="radio" name="tipo_documento" value="dni" class="form-radio text-red-600">
+            <span>DNI</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="radio" name="tipo_documento" value="carne_extranjeria" class="form-radio text-red-600">
+            <span>Carné de extranjería</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="radio" name="tipo_documento" value="ruc" class="form-radio text-red-600">
+            <span>RUC</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="radio" name="tipo_documento" value="pasaporte" class="form-radio text-red-600">
+            <span>Pasaporte</span>
+        </label>
     </div>
 </div>
 
 <!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: N° de documento -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
+    <label for="nro_doc" class="block text-md font-normal text-gray-800 mb-1">
         6. N° de documento <span class="text-red-700">*</span>
     </label>
 
     <input
         type="text"
-        id="nombre_apellido"
-        name="nombre_apellido"
+        id="nro_doc"
+        name="nro_doc"
         placeholder="Escriba su respuesta"
         class="w-full px-3 py-2 bg-white border-b-2 border-transparent focus:border-[#880E4F] hover:border-[#C2185B] transition duration-200 outline-none"
         required
     >
 </div>
 
-<!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: N° de celular -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
+    <label for="nro_cel" class="block text-md font-normal text-gray-800 mb-1">
         7. N° de celular <span class="text-red-700">*</span>
     </label>
 
     <input
         type="text"
-        id="nombre_apellido"
-        name="nombre_apellido"
+        id="nro_cel"
+        name="nro_cel"
         placeholder="Escriba su respuesta"
         class="w-full px-3 py-2 bg-white border-b-2 border-transparent focus:border-[#880E4F] hover:border-[#C2185B] transition duration-200 outline-none"
         required
     >
 </div>
 
-<!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: Teléfono fijo -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
-        8. Telefono fijo <span class="text-red-700">*</span>
+    <label for="telefono" class="block text-md font-normal text-gray-800 mb-1">
+        8. Teléfono fijo <span class="text-red-700">*</span>
     </label>
 
     <input
         type="text"
-        id="nombre_apellido"
-        name="nombre_apellido"
+        id="telefono"
+        name="telefono"
         placeholder="Escriba su respuesta"
         class="w-full px-3 py-2 bg-white border-b-2 border-transparent focus:border-[#880E4F] hover:border-[#C2185B] transition duration-200 outline-none"
         required
     >
 </div>
-
-<!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: Correo electrónico -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
-        9. Correo electronico <span class="text-red-700">*</span>
+    <label for="correo" class="block text-md font-normal text-gray-800 mb-1">
+        9. Correo electrónico <span class="text-red-700">*</span>
     </label>
 
     <input
         type="text"
-        id="nombre_apellido"
-        name="nombre_apellido"
+        id="correo"
+        name="correo"
         placeholder="Escriba su respuesta"
         class="w-full px-3 py-2 bg-white border-b-2 border-transparent focus:border-[#880E4F] hover:border-[#C2185B] transition duration-200 outline-none"
         required
     >
 </div>
 
-<!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: Dirección -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
-        10. Correo electronico <span class="text-red-700">*</span>
+    <label for="direccion" class="block text-md font-normal text-gray-800 mb-1">
+        10. Dirección <span class="text-red-700">*</span>
     </label>
 
     <input
         type="text"
-        id="nombre_apellido"
-        name="nombre_apellido"
+        id="direccion"
+        name="direccion"
         placeholder="Escriba su respuesta"
         class="w-full px-3 py-2 bg-white border-b-2 border-transparent focus:border-[#880E4F] hover:border-[#C2185B] transition duration-200 outline-none"
         required
     >
 </div>
 
-<!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: Departamento, Provincia y Distrito -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
+    <label for="ubicacion" class="block text-md font-normal text-gray-800 mb-0.5">
         11. Departamento, Provincia y distrito <span class="text-red-700">*</span>
     </label>
 
+    <p class="text-sm italic text-gray-600 mb-1">
+        Por ejemplo: LIMA, LIMA, Ate
+    </p>
+
     <input
         type="text"
-        id="nombre_apellido"
-        name="nombre_apellido"
+        id="ubicacion"
+        name="ubicacion"
         placeholder="Escriba su respuesta"
         class="w-full px-3 py-2 bg-white border-b-2 border-transparent focus:border-[#880E4F] hover:border-[#C2185B] transition duration-200 outline-none"
         required
     >
 </div>
 
-<!-- Campo: Nombres y apellidos con resalte dinámico -->
+<!-- Campo: Nombre del padre, madre o apoderado -->
 <div>
-    <label for="nombre_apellido" class="block text-md font-semibold text-gray-800 mb-1">
+    <label for="apoderado" class="block text-md font-normal text-gray-800 mb-1">
         12. Nombre del padre, madre o apoderado (en caso sea menor de edad). <span class="text-red-700">*</span>
     </label>
 
     <input
         type="text"
-        id="nombre_apellido"
-        name="nombre_apellido"
+        id="apoderado"
+        name="apoderado"
         placeholder="Escriba su respuesta"
         class="w-full px-3 py-2 bg-white border-b-2 border-transparent focus:border-[#880E4F] hover:border-[#C2185B] transition duration-200 outline-none"
         required
     >
 </div>
-

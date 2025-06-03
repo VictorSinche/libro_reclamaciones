@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,ts}'],
+  content: ['./src/**/*.{html,ts}', './resources/**/*.blade.php'], // puedes incluir Blade si estás en Laravel
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        roseuma: '#880E4F',
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('flowbite/plugin') // AGREGAR ESTO
-],
-};
+    require('flowbite/plugin'),
+  ],
+}
