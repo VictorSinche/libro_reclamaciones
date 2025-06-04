@@ -5,7 +5,7 @@ use App\Http\Controllers\InfoPostulanteController;
 use App\Http\Controllers\PostulanteLoginController;
 use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
-use App\Http\Controllers\LibroReclamacionesController;
+use App\Http\Controllers\LibroReclamacionController;
 use App\Http\Controllers\PermisoPostulanteController;
 use FontLib\Table\Type\name;
 
@@ -14,7 +14,8 @@ use FontLib\Table\Type\name;
 | Rutas para Libro de reclamciones
 |--------------------------------------------------------------------------
 */
-Route::get('/', [LibroReclamacionesController::class, 'registro'])->name('libroreclamaciones.registro');
+Route::get('/', [LibroReclamacionController::class, 'registro'])->name('libroreclamaciones.registro');
+Route::post('/libro-reclamaciones', [LibroReclamacionController::class, 'store'])->name('libro-reclamaciones.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,10 @@ Route::middleware('auth.admin')->group(function () {
 Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
 Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
 Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
+Route::get('/listlibro', [LibroReclamacionController::class, 'listarLibroRe'])->name('admision.libroRe');
+Route::get('/hojareclamo/{id}', [LibroReclamacionController::class, 'hojareclamacion'])->name('admision.hojareclamacion');
+Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 'descargarPDF'])->name('libro-reclamaciones.pdf');
+
 Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
 
 /*

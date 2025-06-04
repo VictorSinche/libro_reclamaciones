@@ -13,4 +13,10 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('flowbite/plugin'),
   ],
+  content: [
+  './resources/**/*.blade.php',
+  './resources/**/*.js',
+  './resources/**/*.vue',
+],
+
 }

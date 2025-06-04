@@ -6,23 +6,23 @@
     <label class="block text-md font-normal mb-1">13. Programa <span class="text-red-700">*</span></label>
     <div class="mt-3 space-y-2">
         <label class="flex items-center space-x-2">
-            <input type="radio" name="programa" value="pregrado" class="form-radio text-red-600">
+            <input type="radio" name="programa" value="Pregrado" class="form-radio text-[#E72352] w-5 h-5">
             <span>Pregrado</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="programa" value="especializacion" class="form-radio text-red-600">
+            <input type="radio" name="programa" value="Especialización" class="form-radio text-[#E72352] w-5 h-5">
             <span>Especialización</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="programa" value="postgrado" class="form-radio text-red-600">
+            <input type="radio" name="programa" value="Postgrado" class="form-radio text-[#E72352] w-5 h-5">
             <span>Postgrado</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="programa" value="eventos_formacion" class="form-radio text-red-600">
+            <input type="radio" name="programa" value="Conferencia / Seminario / Webinar" class="form-radio text-[#E72352] w-5 h-5">
             <span>Conferencia / Seminario / Webinar</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="programa" value="otro" class="form-radio text-red-600">
+            <input type="radio" name="programa" value="Otro" class="form-radio text-[#E72352] w-5 h-5">
             <span>Otro</span>
         </label>
     </div>

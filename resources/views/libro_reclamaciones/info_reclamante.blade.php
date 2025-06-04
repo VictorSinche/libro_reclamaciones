@@ -6,11 +6,11 @@
     <label class="block text-md font-normal mb-1">3. Tipo de reclamante <span class="text-red-700">*</span></label>
     <div class="mt-3 space-y-2">
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_reclamante" value="persona_natural" class="form-radio text-red-600">
+            <input type="radio" name="tipo_reclamante" value="Persona Natural" class="form-radio text-[#E72352] w-5 h-5">
             <span>Persona Natural</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_reclamante" value="persona_juridica" class="form-radio text-red-600">
+            <input type="radio" name="tipo_reclamante" value="Persona Jurídica" class="form-radio text-[#E72352] w-5 h-5">
             <span>Persona Jurídica</span>
         </label>
     </div>
@@ -36,23 +36,23 @@
     <label class="block text-md font-normal mb-1">5. Tipo documento <span class="text-red-700">*</span></label>
     <div class="mt-3 space-y-2">
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_documento" value="codigo_estudiante" class="form-radio text-red-600">
+            <input type="radio" name="tipo_documento" value="Código de estudiante" class="form-radio text-[#E72352] w-5 h-5">
             <span>Código de estudiante</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_documento" value="dni" class="form-radio text-red-600">
+            <input type="radio" name="tipo_documento" value="DNI" class="form-radio text-[#E72352] w-5 h-5">
             <span>DNI</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_documento" value="carne_extranjeria" class="form-radio text-red-600">
+            <input type="radio" name="tipo_documento" value="Carné de extranjería" class="form-radio text-[#E72352] w-5 h-5">
             <span>Carné de extranjería</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_documento" value="ruc" class="form-radio text-red-600">
+            <input type="radio" name="tipo_documento" value="RUC" class="form-radio text-[#E72352] w-5 h-5">
             <span>RUC</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_documento" value="pasaporte" class="form-radio text-red-600">
+            <input type="radio" name="tipo_documento" value="Pasaporte" class="form-radio text-[#E72352] w-5 h-5">
             <span>Pasaporte</span>
         </label>
     </div>
