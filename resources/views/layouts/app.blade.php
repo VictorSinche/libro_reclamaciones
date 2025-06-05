@@ -119,7 +119,7 @@
             <ul id="submenu-user" class="py-2 space-y-2 {{ Request::routeIs('user.*') ? '' : 'hidden' }}">
               @if(tienePermisoGlobal('PER.1'))
                 <li>
-                  <a href="{{ route('user.list') }}" 
+                  <a href="{{ route('user.viewUser') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                     {{ Request::routeIs('user.list') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     Lista de usuarios
@@ -136,6 +136,16 @@
                 </a>              
               </li>
               @endif
+
+              {{-- @if(tienePermisoGlobal('PER.3')) --}}
+                <li>
+                <a href="{{ route('user.asignarArea') }}" 
+                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                  {{ Request::routeIs('user.asignarArea') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Asignar area
+                </a>              
+              </li>
+              {{-- @endif --}}
             </ul>            
           </li>
           @endif
@@ -261,6 +271,24 @@
                     </a>            
                   </li>
                 {{-- @endif --}}
+                {{-- @if(tienePermisoGlobal('ADM.4')) --}}
+                  <li>
+                    <a href="{{ route('admision.derivaciones') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('admision.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Hojas reclamaciones derivadas
+                    </a>            
+                  </li>
+                {{-- @endif --}}
+                  <li>
+                    <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                      <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
+                      </svg>
+                      <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
+                      <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
+                    </a>
+                  </li>
               </ul>
             </li>
           @endif

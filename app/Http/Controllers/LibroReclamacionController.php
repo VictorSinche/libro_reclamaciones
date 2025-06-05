@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use Illuminate\Http\Request;
 use App\Models\LibroReclamacion;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Derivacion;
 
 class LibroReclamacionController extends Controller
 {
@@ -46,8 +48,10 @@ class LibroReclamacionController extends Controller
 
     public function listarLibroRe()
     {
+        $areas = Area::all(); // O puedes aplicar orden si quieres: Area::orderBy('nombre')->get();
         $reclamos = \App\Models\LibroReclamacion::orderBy('fecha_evento', 'desc')->get();
-        return view('libro_reclamaciones.listahojasreclamaciones', compact('reclamos'));
+
+        return view('libro_reclamaciones.listahojasreclamaciones', compact('reclamos', 'areas'));
     }
     
     public function descargarPDF($id)
@@ -57,6 +61,44 @@ class LibroReclamacionController extends Controller
         $pdf = Pdf::loadView('libro_reclamaciones.modelolibre.hoja', compact('reclamo'))->setPaper('A4', 'portrait');
 
         return $pdf->download("hoja-reclamacion-UMA-{$reclamo->id}.pdf");
+    }
+
+    public function guardarDerivacion(Request $request)
+    {
+        $request->validate([
+            'reclamo_id' => 'required|exists:libro_reclamaciones,id',
+            'area_id' => 'required|exists:areas,id',
+            'observaciones' => 'nullable|string',
+        ]);
+
+        Derivacion::create([
+            'libro_reclamacion_id' => $request->reclamo_id,
+            'area_id' => $request->area_id,
+            'comentario' => $request->observaciones, // <- aquí corregido
+            'estado' => 'pendiente',
+        ]);
+
+        return redirect()->back()->with('success', 'Reclamo derivado correctamente.');
+    }
+
+    public function verPorArea()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::orderBy('fecha_evento', 'desc')->get();
+
+        $areas = Area::all();
+
+            return view('libro_reclamaciones.derivaciones.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 }
 

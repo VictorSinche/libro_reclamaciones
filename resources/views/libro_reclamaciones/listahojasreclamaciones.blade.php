@@ -185,7 +185,7 @@
                                     <i class="fa-solid fa-print"></i>
                                 </a>
                                 {{-- Botón derivar --}}
-                                <a href="#" title="Derivar"
+                                <a href="javascript:void(0)" title="Derivar" onclick="abrirModal({{ $reclamo->id }})"
                                     class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition">
                                     <i class="fas fa-share"></i>
                                 </a>
@@ -214,4 +214,71 @@
                 </div>
             </div>
     </div>
+    
+    <!-- Modal Derivar -->
+    <div id="modal-derivar" class="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+            <button onclick="cerrarModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">&times;</button>
+            <h2 class="text-xl font-bold text-[#880E4F] mb-4">Derivar Hoja de Reclamación</h2>
+
+            <form id="form-derivar" method="POST" action="{{ route('derivar.reclamo') }}">
+                @csrf
+                <input type="hidden" name="reclamo_id" id="reclamo_id_modal">
+
+                <div class="mb-4">
+                    <label for="area_id" class="block font-semibold mb-1">Área destino:</label>
+                    <select name="area_id" id="area_id" required class="w-full border border-gray-300 rounded px-3 py-2">
+                        @foreach ($areas as $area)
+                            <option value="{{ $area->id }}">{{ $area->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="observaciones" class="block font-semibold mb-1">Observaciones:</label>
+                    <textarea name="observaciones" id="observaciones" rows="4" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Motivo o comentario adicional..."></textarea>
+                </div>
+
+                <div class="text-right">
+                    <button type="submit" class="bg-[#880E4F] text-white px-4 py-2 rounded hover:bg-[#6a0c3d]">Derivar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function abrirModal(reclamoId) {
+            document.getElementById('reclamo_id_modal').value = reclamoId;
+            document.getElementById('modal-derivar').classList.remove('hidden');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-derivar').classList.add('hidden');
+        }
+    </script>
+
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Derivación exitosa!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#880E4F'
+            });
+        </script>
+    @endif
+
+    @if ($errors->any())
+        <script>
+            let errores = @json($errors->all());
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al derivar',
+                html: '<ul style="text-align:left;">' + errores.map(e => `<li>• ${e}</li>`).join('') + '</ul>',
+                confirmButtonColor: '#880E4F'
+            });
+        </script>
+    @endif
+
 @endsection

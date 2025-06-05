@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\UserAdmin;
-
+use App\Models\Area;
 class PermisoPostulanteController extends Controller
 {
     public function index(Request $request)
@@ -108,5 +108,34 @@ class PermisoPostulanteController extends Controller
         }
 
         return redirect()->route('user.listPermisos')->with('success', 'Permisos actualizados correctamente.');
+    }
+
+    public function vistaAsignarArea()
+    {
+        $usuarios = UserAdmin::all();
+        $areas = Area::all();
+
+        return view('auth.listyPermisos.asignarArea', compact('usuarios', 'areas'));
+    }
+
+    public function asignarArea(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users_admin,id',
+            'area_id' => 'nullable|exists:areas,id',
+        ]);
+
+        $usuario = UserAdmin::find($request->user_id);
+        $usuario->area_id = $request->area_id;
+        $usuario->save();
+
+        return back()->with('success', 'Área asignada correctamente.');
+    }
+
+    public function viewUser()
+    {
+        $usuarios = UserAdmin::with('area')->get();
+        $areas = Area::all();
+        return view('auth.listyPermisos.listuser', compact('usuarios', 'areas'));
     }
 }

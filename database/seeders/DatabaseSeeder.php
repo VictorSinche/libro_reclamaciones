@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\ModalidadIngreso;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,7 +17,8 @@ class DatabaseSeeder extends Seeder
             ModuleSeeder::class,
             ItemSeeder::class,
             PermissionSeeder::class,
-            PermissionPostulanteSeeder::class,
+            // PermissionPostulanteSeeder::class,
+            AreaSeeder::class,
         ]);
     }
 }

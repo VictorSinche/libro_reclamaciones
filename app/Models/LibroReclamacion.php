@@ -33,4 +33,10 @@ class LibroReclamacion extends Model
         'descripcion_reclamo',
         'pedido',
     ];
+
+    public function derivaciones()
+    {
+        return $this->hasMany(Derivacion::class);
+    }
+
 }

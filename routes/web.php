@@ -24,7 +24,7 @@ Route::post('/libro-reclamaciones', [LibroReclamacionController::class, 'store']
 */
 // Route::get('/', fn() => redirect()->route('login.postulante'))->name('auth.login') ;
 
-Route::get('/login-postulante', [PostulanteLoginController::class, 'form'])->name('login.postulante')  ->name('auth.login');
+Route::get('/login', [PostulanteLoginController::class, 'form'])->name('login.postulante')->name('auth.login');
 Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->name('login.postulante.submit');
 Route::post('/logout', [PostulanteLoginController::class, 'logout'])->name('logout');
 
@@ -38,10 +38,10 @@ Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('dire
 Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
 Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
 Route::get('/listlibro', [LibroReclamacionController::class, 'listarLibroRe'])->name('admision.libroRe');
-Route::get('/hojareclamo/{id}', [LibroReclamacionController::class, 'hojareclamacion'])->name('admision.hojareclamacion');
 Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 'descargarPDF'])->name('libro-reclamaciones.pdf');
-
+Route::post('/derivar-reclamo', [LibroReclamacionController::class, 'guardarDerivacion'])->name('derivar.reclamo');
 Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])->name('admision.derivaciones');
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +58,7 @@ Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class,
 |--------------------------------------------------------------------------
 */
 Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
-Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
+// Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
 Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
 Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
@@ -69,6 +69,10 @@ Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.lis
 */
 Route::get('/listPermisos', [PermisoPostulanteController::class, 'index'])->name('user.listPermisos');
 Route::post('/listPermisos', [PermisoPostulanteController::class, 'update'])->name('user.updatePermisos');
+Route::get('/admin/asignar-area', [PermisoPostulanteController::class, 'vistaAsignarArea'])->name('user.vistaAsignarArea');
+Route::post('/admin/asignar-area', [PermisoPostulanteController::class, 'asignarArea'])->name('user.asignarArea');
+Route::get('/usuarios-admin', [PermisoPostulanteController::class, 'viewUser'])->name('user.viewUser');
+Route::post('/usuarios-admin/store', [PostulanteLoginController::class, 'createUpdateUser'])->name('usuarios.admin.store');
 });
 /*
 |--------------------------------------------------------------------------
