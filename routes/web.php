@@ -7,7 +7,7 @@ use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
 use App\Http\Controllers\LibroReclamacionController;
 use App\Http\Controllers\PermisoPostulanteController;
-use FontLib\Table\Type\name;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +42,17 @@ Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 
 Route::post('/derivar-reclamo', [LibroReclamacionController::class, 'guardarDerivacion'])->name('derivar.reclamo');
 Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
 Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])->name('admision.derivaciones');
+Route::get('/probar-mail', function () {
+    $reclamo = App\Models\LibroReclamacion::first();
+    $area = App\Models\Area::find($reclamo->area_id);
+    Mail::to('jimiy32402@3dboxer.com.com')->send(new \App\Mail\NotificarDerivacion($reclamo, $area));
+    return 'Correo enviado.';
+});
+
+Route::get('/ver-mailer', function () {
+    return config('mail.default'); // DEBE decir smtp
+});
+
 
 /*
 |--------------------------------------------------------------------------

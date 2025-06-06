@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\LibroReclamacion;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Derivacion;
+use App\Models\UserAdmin;
+use App\Mail\NotificarDerivacion;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class LibroReclamacionController extends Controller
 {
@@ -66,21 +70,50 @@ class LibroReclamacionController extends Controller
     public function guardarDerivacion(Request $request)
     {
         $request->validate([
-            'reclamo_id' => 'required|exists:libro_reclamaciones,id',
-            'area_id' => 'required|exists:areas,id',
-            'observaciones' => 'nullable|string',
+            'reclamo_id'     => 'required|exists:libro_reclamaciones,id',
+            'area_id'        => 'required|exists:areas,id',
+            'observaciones'  => 'nullable|string',
         ]);
 
+        Log::debug('📌 Iniciando proceso de derivación...');
+        // dd(config('mail.default'));       // debe decir 'smtp'
+        // dd(env('MAIL_MAILER'));           // debe decir 'smtp'
+
+        // 1. Crear derivación
         Derivacion::create([
             'libro_reclamacion_id' => $request->reclamo_id,
-            'area_id' => $request->area_id,
-            'comentario' => $request->observaciones, // <- aquí corregido
-            'estado' => 'pendiente',
+            'area_id'              => $request->area_id,
+            'comentario'           => $request->observaciones,
+            'estado'               => '1',
         ]);
 
-        return redirect()->back()->with('success', 'Reclamo derivado correctamente.');
-    }
+        Log::debug('✅ Derivación creada para reclamo ID: ' . $request->reclamo_id);
 
+        // 2. Actualizar el estado del reclamo
+        $reclamo = LibroReclamacion::find($request->reclamo_id);
+        $reclamo->estado = 1;
+        $reclamo->save();
+
+        Log::debug('📥 Estado del reclamo actualizado a 1');
+
+        // 3. Buscar usuario del área
+        $usuario = UserAdmin::where('area_id', $request->area_id)->first();
+
+        if ($usuario) {
+            Log::debug('📧 Enviando correo a: ' . $usuario->email);
+
+            // 4. Enviar correo
+            Mail::to($usuario->email)->send(new NotificarDerivacion($reclamo, $usuario->area));
+            // Mail::to('balaga7306@acedby.com')->send(new NotificarDerivacion($reclamo, $usuario->area));
+
+            Log::debug('✅ Correo enviado correctamente');
+        } else {
+            Log::warning('⚠️ No se encontró usuario para área ID: ' . $request->area_id);
+        }
+
+        return redirect()->back()->with('success', '✅ Reclamo derivado correctamente.');
+    }
+    
     public function verPorArea()
     {
         

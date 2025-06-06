@@ -6,43 +6,43 @@
     <label class="block text-md font-normal mb-1">18. Motivo del reclamo <span class="text-red-700">*</span></label>
     <div class="mt-3 space-y-2">
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Problemas con la infraestructura" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Problemas con la infraestructura" class="form-radio text-[#E72352] w-5 h-5">
             <span>Problemas con la infraestructura</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Características del producto o servicio" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Características del producto o servicio" class="form-radio text-[#E72352] w-5 h-5">
             <span>Características del producto o servicio</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Mala atención" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Mala atención" class="form-radio text-[#E72352] w-5 h-5">
             <span>Mala atención</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Falta / Demora en la entrega de documentos" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Falta / Demora en la entrega de documentos" class="form-radio text-[#E72352] w-5 h-5">
             <span>Falta / Demora en la entrega de documentos</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Problemas con cobranza" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Problemas con cobranza" class="form-radio text-[#E72352] w-5 h-5">
             <span>Problemas con cobranza</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Problemas con Sistemas" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Problemas con Sistemas" class="form-radio text-[#E72352] w-5 h-5">
             <span>Problemas con Sistemas</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Problemas de matrícula" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Problemas de matrícula" class="form-radio text-[#E72352] w-5 h-5">
             <span>Problemas de matrícula</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Problemas con certificaciones / documentos" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Problemas con certificaciones / documentos" class="form-radio text-[#E72352] w-5 h-5">
             <span>Problemas con certificaciones / documentos</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Problemas con clases o profesores" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Problemas con clases o profesores" class="form-radio text-[#E72352] w-5 h-5">
             <span>Problemas con clases o profesores</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="motivo_reclamo" value="Otros" class="form-radio text-red-600">
+            <input type="radio" name="motivo_reclamo" value="Otros" class="form-radio text-[#E72352] w-5 h-5">
             <span>Otros</span>
         </label>
     </div>
