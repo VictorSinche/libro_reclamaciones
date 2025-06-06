@@ -87,9 +87,9 @@
         <tr><th colspan="4">3. DETALLE DE LA RECLAMACIÓN</th></tr>
         <tr>
             <td><strong>Reclamo</strong></td>
-            <td>{{ $reclamo->tipo_reclamo_queja == 'reclamo' ? 'X' : '' }}</td>
-            <td><strong>Queja</strong></td>
-            <td>{{ $reclamo->tipo_reclamo_queja == 'queja' ? 'X' : '' }}</td>
+            <td><strong>{{ $reclamo->tipo_reclamo_queja == 'reclamo' ? 'X' : '' }}</td>
+            <td><strong>Queja</strong><strong></td>
+            <td><strong>{{ $reclamo->tipo_reclamo_queja == 'queja' ? 'X' : '' }}</td>
         </tr>
         <tr>
             <td colspan="1"><strong>Motivo:</strong></td>
