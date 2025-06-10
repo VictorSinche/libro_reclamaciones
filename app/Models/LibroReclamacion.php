@@ -39,4 +39,14 @@ class LibroReclamacion extends Model
         return $this->hasMany(Derivacion::class);
     }
 
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
+
+    public function ultimaDerivacion()
+    {
+        return $this->hasOne(Derivacion::class)->latestOfMany();
+    }
+
 }

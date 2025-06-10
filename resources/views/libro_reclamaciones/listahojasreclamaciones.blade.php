@@ -5,80 +5,108 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    @php
+        function nextDirection($column, $currentSort, $currentDir) {
+            return $currentSort === $column && $currentDir === 'asc' ? 'desc' : 'asc';
+        }
+    @endphp
+
+    @php
+        $isIdSort = $sort === 'id';
+        $isNombreSort = $sort === 'nombre_apellido';
+        $isReclamoSort = $sort === 'tipo_reclamo_queja';
+        $isIdFech = $sort === 'fecha_evento';
+        $isIdEstado = $sort === 'estado';
+
+        $directionId = $isIdSort ? $direction : 'asc';
+        $directionNombre = $isNombreSort ? $direction : 'asc';
+        $directionReclamo = $isReclamoSort ? $direction : 'asc';
+        $directionFech = $isIdFech ? $direction : 'asc';
+        $directionEstado = $isIdEstado ? $direction : 'asc';
+
+
+        $iconClassId = $directionId === 'asc' ? 'rotate-180' : '';
+        $iconClassNombre = $directionNombre === 'asc' ? 'rotate-180' : '';
+        $iconClassReclamo = $directionReclamo === 'asc' ? 'rotate-180' : '';
+        $iconClassFech = $directionFech ? $direction : 'asc';
+        $iconClassEstado = $directionEstado ? $direction : 'asc';
+
+    @endphp
+
     <!-- component -->
     <div class="max-w-[100%] mx-auto">
         <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-xl bg-clip-border">
             <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                <!-- Título -->
-                <div>
-                    <h3 class="text-2xl font-semibold text-slate-800">Hojas de Reclamaciones</h3>
-                    <p class="text-slate-500">Observa bien las hojas de reclamaciones y deriva según corresponda al área asignada.</p>
-                </div>
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <!-- Título -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-slate-800">Hojas de Reclamaciones</h3>
+                        <p class="text-slate-500">Observa bien las hojas de reclamaciones y deriva según corresponda al área asignada.</p>
+                    </div>
 
-                <!-- Contenedor derecho: buscador + formulario -->
-                <div class="flex flex-col sm:flex-row items-center gap-3">
-                    <!-- Buscador -->
-                    <div class="w-full md:w-72">
-                        <div class="relative h-10 w-full min-w-[200px]">
-                            <div class="absolute grid w-5 h-5 top-2/4 right-3 -translate-y-2/4 place-items-center text-blue-gray-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" aria-hidden="true" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <input
-                                class="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                                placeholder=" " />
-                            <label
-                                class="pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900">
-                                Buscar
-                            </label>
+                    <!-- Contenedor derecho: buscador + formulario -->
+                    <div class="flex flex-col sm:flex-row items-center gap-3">
+                        <!-- Buscador -->
+                        <div class="w-full md:w-72">
+                            <form method="GET" action="{{ route('admision.libroRe') }}" class="w-full md:w-72">
+                                <div class="relative h-10 w-full min-w-[200px]">
+                                    <input
+                                        type="text"
+                                        name="search"
+                                        value="{{ request('search') }}"
+                                        class="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline-0"
+                                        placeholder="Buscar por nombre, DNI o correo" />
+
+                                    <button type="submit" class="absolute top-1/2 right-3 -translate-y-1/2 text-blue-gray-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
-            <div class="p-0 overflow-scroll">
+            <div class="overflow-y-auto max-h-[70vh] mt-4">
                 <table class="w-full mt-4 text-left table-auto min-w-max">
                     <thead>
                         <tr>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
+                            <a href="?sort=id&direction={{ nextDirection('id', $sort, $direction) }}"
                             class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
                             ID
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true"
+                                class="w-4 h-4 transition-transform {{ $iconClassId}}">
                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                                    d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
                             </svg>
-                            </p>
+                            </a>
                         </th>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
-                            class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                            Nombre Completo
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                            </svg>
-                            </p>
+                            <a href="?sort=id&direction={{ nextDirection('id', $sort, $direction) }}"
+                            class="flex items-center justify-between gap-2 text-sm text-slate-500 font-normal">
+                                Nombre Completo
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" aria-hidden="true"
+                                    class="w-4 h-4 transition-transform {{ $iconClassNombre}}">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                                </svg>
+                            </a>
                         </th>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
                             class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
                             DNI
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                            </svg>
                             </p>
                         </th>
                         <th
@@ -86,48 +114,49 @@
                             <p
                             class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                             Tipo Reclamante
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                            </svg>
                             </p>
                         </th>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
+                            <a href="?sort=tipo_reclamo_queja&direction={{ nextDirection('tipo_reclamo_queja', $sort, $direction) }}"
                             class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                             Tipo Reclamo
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true"
+                                class="w-4 h-4 transition-transform {{ $iconClassReclamo }}">
                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                                    d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
                             </svg>
-                            </p>
+                            </a>
                         </th>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
+                            <a href="?sort=fecha_evento&direction={{ nextDirection('fecha_evento', $sort, $direction) }}"
                             class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                             Fecha del evento
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true"
+                                class="w-4 h-4 transition-transform {{ $iconClassFech}}">
                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                                    d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
                             </svg>
-                            </p>
+                            </a>
                         </th>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
+                            <a href="?sort=estado&direction={{ nextDirection('estado', $sort, $direction) }}"
                             class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                             Estado
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                            </svg>
-                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" aria-hidden="true"
+                                    class="w-4 h-4 transition-transform {{ $iconClassEstado}}">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                                </svg>
+                            </a>
                         </th>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
@@ -188,12 +217,22 @@
                                     </p>
                                 </div>
                             </td>
+                            @php
+                                $estados = [
+                                    0 => ['label' => 'Pendiente de derivación', 'color' => 'bg-yellow-100 text-yellow-800', 'icon' => '⏳'],
+                                    1 => ['label' => 'Derivado al área', 'color' => 'bg-blue-100 text-blue-800', 'icon' => '📤'],
+                                    2 => ['label' => 'Reclamo resuelto', 'color' => 'bg-green-100 text-green-800', 'icon' => '✅'],
+                                ];
+                                $estado = $estados[$reclamo->estado];
+                            @endphp
+
                             <td class="p-4 border-b border-slate-200">
-                                <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        {{ ucfirst($reclamo->estado) }}
-                                    </p>
-                                </div>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold {{ $estado['color'] }}">
+                                    {{ $estado['icon'] }} {{ $estado['label'] }}
+                                    @if($reclamo->estado == 1 && $reclamo->ultimaDerivacion && $reclamo->ultimaDerivacion->area)
+                                        de {{ $reclamo->ultimaDerivacion->area->nombre }}
+                                    @endif
+                                </span>
                             </td>
                             <td class="p-4 border-b border-slate-200">
                                 {{-- Botón imprimir --}}
@@ -216,22 +255,23 @@
             </div>
             <div class="flex items-center justify-between p-3">
                 <p class="block text-sm text-slate-500">
-                    Página 1 de 50
+                    Página {{ $reclamos->currentPage() }} de {{ $reclamos->lastPage() }}
                 </p>
-                    <div class="flex gap-1">
-                    <button 
-                    {{-- (click)="anteriorPagina()" [disabled]="paginaActual === 1" --}}
-                        class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 disabled:opacity-50">
+                <div class="flex gap-1">
+                    {{-- Botón Anterior --}}
+                    <a href="{{ $reclamos->previousPageUrl() }}" 
+                    class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 {{ $reclamos->onFirstPage() ? 'opacity-50 pointer-events-none' : '' }}">
                         Anterior
-                    </button>
-                    <button 
-                    {{-- (click)="siguientePagina()" [disabled]="paginaActual === totalPaginas" --}}
-                        class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 disabled:opacity-50">
+                    </a>
+
+                    {{-- Botón Siguiente --}}
+                    <a href="{{ $reclamos->nextPageUrl() }}" 
+                    class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 {{ !$reclamos->hasMorePages() ? 'opacity-50 pointer-events-none' : '' }}">
                         Siguiente
-                    </button>
-                    </div>
+                    </a>
                 </div>
             </div>
+        </div>
     </div>
     
     <!-- Modal Derivar -->

@@ -49,15 +49,28 @@ class LibroReclamacionController extends Controller
 
         return redirect()->route('libroreclamaciones.registro')->with('success', 'Formulario enviado correctamente');
     }
-
-    public function listarLibroRe()
-    {
-        $areas = Area::all(); // O puedes aplicar orden si quieres: Area::orderBy('nombre')->get();
-        $reclamos = \App\Models\LibroReclamacion::orderBy('fecha_evento', 'desc')->get();
-
-        return view('libro_reclamaciones.listahojasreclamaciones', compact('reclamos', 'areas'));
-    }
     
+    public function listarLibroRe(Request $request)
+    {
+        $search = $request->input('search');
+        $sort = $request->input('sort', 'fecha_evento');
+        $direction = $request->input('direction', 'desc');
+
+        $areas = Area::all();
+
+        $reclamos = \App\Models\LibroReclamacion::with('area')
+            ->when($search, function ($query, $search) {
+                $query->where('nombre_apellido', 'like', "%$search%")
+                    ->orWhere('nro_doc', 'like', "%$search%")
+                    ->orWhere('correo', 'like', "%$search%");
+            })
+            ->orderBy($sort, $direction)
+            ->paginate(10)
+            ->appends(['search' => $search, 'sort' => $sort, 'direction' => $direction]); // conserva filtros al paginar
+
+        return view('libro_reclamaciones.listahojasreclamaciones', compact('reclamos', 'areas', 'search', 'sort', 'direction'));
+    }
+
     public function descargarPDF($id)
     {
         $reclamo = LibroReclamacion::findOrFail($id);
@@ -76,8 +89,8 @@ class LibroReclamacionController extends Controller
         ]);
 
         Log::debug('📌 Iniciando proceso de derivación...');
-        // dd(config('mail.default'));       // debe decir 'smtp'
-        // dd(env('MAIL_MAILER'));           // debe decir 'smtp'
+        //dd(config('mail.default'));       // debe decir 'smtp'
+        //dd(env('MAIL_MAILER'));           // debe decir 'smtp'
 
         // 1. Crear derivación
         Derivacion::create([
@@ -127,7 +140,9 @@ class LibroReclamacionController extends Controller
             ->orderByDesc('created_at')
             ->get();
         
-        $reclamos = \App\Models\LibroReclamacion::orderBy('fecha_evento', 'desc')->get();
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
 
         $areas = Area::all();
 

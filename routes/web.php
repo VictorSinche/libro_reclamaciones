@@ -24,7 +24,7 @@ Route::post('/libro-reclamaciones', [LibroReclamacionController::class, 'store']
 */
 // Route::get('/', fn() => redirect()->route('login.postulante'))->name('auth.login') ;
 
-Route::get('/login', [PostulanteLoginController::class, 'form'])->name('login.postulante')->name('auth.login');
+Route::get('/login', [PostulanteLoginController::class, 'form'])->name('login.postulante');
 Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->name('login.postulante.submit');
 Route::post('/logout', [PostulanteLoginController::class, 'logout'])->name('logout');
 
@@ -42,17 +42,6 @@ Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 
 Route::post('/derivar-reclamo', [LibroReclamacionController::class, 'guardarDerivacion'])->name('derivar.reclamo');
 Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
 Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])->name('admision.derivaciones');
-Route::get('/probar-mail', function () {
-    $reclamo = App\Models\LibroReclamacion::first();
-    $area = App\Models\Area::find($reclamo->area_id);
-    Mail::to('jimiy32402@3dboxer.com.com')->send(new \App\Mail\NotificarDerivacion($reclamo, $area));
-    return 'Correo enviado.';
-});
-
-Route::get('/ver-mailer', function () {
-    return config('mail.default'); // DEBE decir smtp
-});
-
 
 /*
 |--------------------------------------------------------------------------
