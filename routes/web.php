@@ -37,11 +37,17 @@ Route::middleware('auth.admin')->group(function () {
 Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
 Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
 Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
-Route::get('/listlibro', [LibroReclamacionController::class, 'listarLibroRe'])->name('admision.libroRe');
+Route::get('/listlibro', [LibroReclamacionController::class, 'listarLibroRe'])->name('arealegal.libroRe');
 Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 'descargarPDF'])->name('libro-reclamaciones.pdf');
 Route::post('/derivar-reclamo', [LibroReclamacionController::class, 'guardarDerivacion'])->name('derivar.reclamo');
 Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
 Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])->name('admision.derivaciones');
+Route::get('/mis-derivaciones-coa', [LibroReclamacionController::class, 'verPorAreaCoa'])->name('coa.derivaciones');
+Route::post('/derivaciones/{id}/completar', [LibroReclamacionController::class, 'marcarComoAtendido'])->name('derivacion.completar');
+Route::post('/derivacion/informe', [LibroReclamacionController::class, 'guardarInforme'])->name('derivacion.guardar_informe');
+Route::get('/derivacion/{id}/informe/pdf', [LibroReclamacionController::class, 'descargarInformePDF'])->name('derivacion.informe_pdf');
+Route::post('/libro-reclamaciones/{id}/subir-informe', [LibroReclamacionController::class, 'subirInforme'])->name('libroreclamaciones.subirInforme');
+Route::post('/ckeditor/upload', [App\Http\Controllers\CKEditorController::class, 'upload']);
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +63,7 @@ Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class,
 | Rutas de Menús y Submenús
 |--------------------------------------------------------------------------
 */
-Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
+// Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
 // Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
 Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
 Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');

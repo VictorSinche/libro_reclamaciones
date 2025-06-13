@@ -14,7 +14,7 @@ class UserAdminSeeder extends Seeder
     public function run(): void
     {
         UserAdmin::updateOrCreate(
-            ['email' => 'vitosh2911@gmail.com'], // condición de búsqueda
+            ['email' => 'ti@uma.edu.pe'], // condición de búsqueda
             [
                 'nombre'    => 'Super',
                 'apellidos' => 'Administrador',

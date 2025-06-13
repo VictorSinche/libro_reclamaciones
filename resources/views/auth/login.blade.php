@@ -29,14 +29,14 @@
             Login
           </button>
         </div>
-        <div class="mt-4 text-center">
+        {{-- <div class="mt-4 text-center">
           <p class="text-gray-300">
             ¿No tienes una cuenta?
             <a href="{{ route('register.registro') }}" class="text-blue-400 hover:text-blue-600 underline transition duration-200 ease-in-out">
               Regístrate aquí
             </a>
           </p>
-        </div>
+        </div> --}}
       </form>
     </div>
   </div>

@@ -32,6 +32,7 @@ class LibroReclamacion extends Model
         'motivo_reclamo',
         'descripcion_reclamo',
         'pedido',
+        'informe_responsable',
     ];
 
     public function derivaciones()

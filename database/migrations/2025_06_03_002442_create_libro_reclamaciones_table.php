@@ -31,6 +31,7 @@ class CreateLibroReclamacionesTable extends Migration
             $table->text('descripcion_reclamo');
             $table->text('pedido');
             $table->unsignedTinyInteger('estado')->default(0); // Opcional: estado global del documento
+            $table->string('informe_responsable')->nullable();
             $table->timestamps();
         });
     }

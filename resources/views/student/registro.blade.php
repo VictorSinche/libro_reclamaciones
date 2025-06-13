@@ -217,7 +217,7 @@
               
               if(!validarFormulario()) return;
 
-							document.getElementById('loader-wrapper').classList.remove('hidden'); // ⬅️ Mostrar loader
+			    document.getElementById('loader-wrapper').classList.remove('hidden'); // ⬅️ Mostrar loader
 
                 const form = document.getElementById('formPostulante');
                 const formData = new FormData(form);
@@ -233,7 +233,7 @@
                     });
                     const data = await response.json();
 
-										  document.getElementById('loader-wrapper').classList.add('hidden'); // ⬅️ Ocultar loader
+					document.getElementById('loader-wrapper').classList.add('hidden'); // ⬅️ Ocultar loader
 
                     if (response.ok) {
                         if (data.actualizado) {
@@ -260,37 +260,35 @@
 							});
                         }
                     } else {
-											    document.getElementById('loader-wrapper').classList.add('hidden'); // También ocultar aquí por si hay error
-                      if (data.errors) {
-                          const errores = Object.values(data.errors).flat();
-
-                          // Validación específica para número de documento duplicado
-                            const documentoDuplicado = errores.find(msg =>
-                                msg.toLowerCase().includes('documento') && msg.toLowerCase().includes('ya') && msg.toLowerCase().includes('registrado')
-                            );
-												
-                          if (documentoDuplicado) {
-                              Swal.fire({
-                                  icon: 'error',
-                                  title: 'Documento duplicado',
-                                  text: 'Este número de documento ya fue registrado.',
-                              });
-                          } else {
-                              Swal.fire({
-                                  icon: 'warning',
-                                  title: 'Campos incompletos o inválidos',
-                                  html: errores.join('<br>'),
-                              });
-                          }
-
-                      } else {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Error inesperado',
-                              text: data.message || 'Ocurrió un error al guardar los datos.',
-                          });
-                      }
+					document.getElementById('loader-wrapper').classList.add('hidden'); // También ocultar aquí por si hay error
+                    if (data.errors) {
+                    const errores = Object.values(data.errors).flat();
+                      // Validación específica para número de documento duplicado
+                        const documentoDuplicado = errores.find(msg =>
+                            msg.toLowerCase().includes('documento') && msg.toLowerCase().includes('ya') && msg.toLowerCase().includes('registrado')
+                        );
+											
+                        if (documentoDuplicado) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Documento duplicado',
+                                text: 'Este número de documento ya fue registrado.',
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Campos incompletos o inválidos',
+                                html: errores.join('<br>'),
+                            });
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error inesperado',
+                            text: data.message || 'Ocurrió un error al guardar los datos.',
+                        });
                     }
+                }
                 } catch (error) {
                     console.error('Error en la solicitud:', error);
 										  document.getElementById('loader-wrapper').classList.add('hidden'); // ⬅️ Asegurar que se oculte

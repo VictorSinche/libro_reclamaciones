@@ -229,6 +229,33 @@
             </li>
           @endif
 
+          @if (tieneAlgunPermisoGlobal(['AL.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-arealegal" data-collapse-toggle="submenu-arealegal">
+              
+              <i class="fa-solid fa-user-tie fa-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Area legal</span>
+              
+              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+              </svg>
+            </button>
+          
+            <ul id="submenu-arealegal" class="py-2 space-y-2 {{ Request::routeIs('arealegal.*') ? '' : 'hidden' }}">
+              @if (tienePermisoGlobal('DIR.1'))
+                <li>
+                  <a href="{{ route('arealegal.libroRe') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('arealegal.libroRe') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Libros de reclamaciones
+                  </a>              
+                </li>
+              @endif
+            </ul>
+          </li>
+          @endif
+
           @if (tieneAlgunPermisoGlobal(['ADM.1', 'ADM.2', 'ADM.3', 'ADM.4']))
             <li>
               <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
@@ -243,7 +270,7 @@
               </button>
 
               <ul id="submenu-admision" class="py-2 space-y-2 {{ Request::routeIs('admision.*') ? '' : 'hidden' }}">
-                @if(tienePermisoGlobal('ADM.1'))
+                {{-- @if(tienePermisoGlobal('ADM.1'))
                   <li>
                     <a href="{{ route('admision.listpostulante') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -261,17 +288,8 @@
                       Historial Declaración Jurada
                     </a>            
                   </li>
-                @endif
+                @endif --}}
                 @if(tienePermisoGlobal('ADM.3'))
-                  <li>
-                    <a href="{{ route('admision.libroRe') }}" 
-                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                      {{ Request::routeIs('admision.libroRe') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                      Hojas reclamaciones
-                    </a>            
-                  </li>
-                @endif
-                @if(tienePermisoGlobal('ADM.4'))
                   <li>
                     <a href="{{ route('admision.derivaciones') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -280,7 +298,7 @@
                     </a>            
                   </li>
                 @endif
-                  <li>
+                  {{-- <li>
                     <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                       <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                           <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
@@ -288,7 +306,7 @@
                       <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
                       <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
                     </a>
-                  </li>
+                  </li> --}}
               </ul>
             </li>
           @endif
@@ -336,10 +354,10 @@
             <ul id="submenu-coa" class="py-2 space-y-2 {{ Request::routeIs('coa.*') ? '' : 'hidden' }}">
               @if (tienePermisoGlobal('COA.1'))
                 <li>
-                  <a href="{{ route('coa.listado') }}" 
+                  <a href="{{ route('coa.derivaciones') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                    {{ Request::routeIs('coa.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                    Listado
+                    {{ Request::routeIs('coa.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Hojas reclamaciones derivadas
                   </a>              
                 </li>
               @endif

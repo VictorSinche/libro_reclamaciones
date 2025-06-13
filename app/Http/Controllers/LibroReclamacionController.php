@@ -11,6 +11,8 @@ use App\Models\UserAdmin;
 use App\Mail\NotificarDerivacion;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\PdfHelper;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
 
 class LibroReclamacionController extends Controller
 {
@@ -68,7 +70,7 @@ class LibroReclamacionController extends Controller
             ->paginate(10)
             ->appends(['search' => $search, 'sort' => $sort, 'direction' => $direction]); // conserva filtros al paginar
 
-        return view('libro_reclamaciones.listahojasreclamaciones', compact('reclamos', 'areas', 'search', 'sort', 'direction'));
+        return view('area_legal.responsable', compact('reclamos', 'areas', 'search', 'sort', 'direction'));
     }
 
     public function descargarPDF($id)
@@ -86,39 +88,41 @@ class LibroReclamacionController extends Controller
             'reclamo_id'     => 'required|exists:libro_reclamaciones,id',
             'area_id'        => 'required|exists:areas,id',
             'observaciones'  => 'nullable|string',
+            'archivo'        => 'nullable|file|max:10240', // máx 10MB
         ]);
 
         Log::debug('📌 Iniciando proceso de derivación...');
-        //dd(config('mail.default'));       // debe decir 'smtp'
-        //dd(env('MAIL_MAILER'));           // debe decir 'smtp'
 
-        // 1. Crear derivación
+        // Procesar archivo si existe
+        $nombreArchivo = null;
+        if ($request->hasFile('archivo')) {
+            $archivo = $request->file('archivo');
+            $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
+            $archivo->storeAs('derivaciones', $nombreArchivo, 'public');
+            Log::debug('📎 Archivo guardado: ' . $nombreArchivo);
+        }
+
+        // Crear derivación
         Derivacion::create([
             'libro_reclamacion_id' => $request->reclamo_id,
             'area_id'              => $request->area_id,
             'comentario'           => $request->observaciones,
-            'estado'               => '1',
+            'estado'               => '0',
+            'archivo'              => $nombreArchivo, // Aquí se guarda si existe
         ]);
-
         Log::debug('✅ Derivación creada para reclamo ID: ' . $request->reclamo_id);
 
-        // 2. Actualizar el estado del reclamo
+        // Actualizar el estado del reclamo
         $reclamo = LibroReclamacion::find($request->reclamo_id);
         $reclamo->estado = 1;
         $reclamo->save();
-
         Log::debug('📥 Estado del reclamo actualizado a 1');
 
-        // 3. Buscar usuario del área
+        // Buscar usuario del área y enviar notificación
         $usuario = UserAdmin::where('area_id', $request->area_id)->first();
-
         if ($usuario) {
             Log::debug('📧 Enviando correo a: ' . $usuario->email);
-
-            // 4. Enviar correo
             Mail::to($usuario->email)->send(new NotificarDerivacion($reclamo, $usuario->area));
-            // Mail::to('balaga7306@acedby.com')->send(new NotificarDerivacion($reclamo, $usuario->area));
-
             Log::debug('✅ Correo enviado correctamente');
         } else {
             Log::warning('⚠️ No se encontró usuario para área ID: ' . $request->area_id);
@@ -126,7 +130,7 @@ class LibroReclamacionController extends Controller
 
         return redirect()->back()->with('success', '✅ Reclamo derivado correctamente.');
     }
-    
+
     public function verPorArea()
     {
         
@@ -148,5 +152,96 @@ class LibroReclamacionController extends Controller
 
             return view('libro_reclamaciones.derivaciones.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
+
+    public function verPorAreaCoa()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
+
+        $areas = Area::all();
+
+            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+    }
+
+    public function marcarComoAtendido($id)
+    {
+        $derivacion = Derivacion::findOrFail($id);
+        $derivacion->estado = 2; // Atendido
+        $derivacion->save();
+
+        $reclamo = $derivacion -> libroReclamacion;
+        if($reclamo){
+            $reclamo -> estado= 2;
+            $reclamo ->save();
+        }
+
+        return back()->with('success', '✅ Derivación marcada como atendida.');
+    }
+
+    public function guardarInforme(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:derivaciones,id',
+            'informe' => 'nullable|string',
+        ]);
+
+        $derivacion = Derivacion::findOrFail($request->id);
+        $derivacion->informe = $request->informe;
+        $derivacion->estado = 1; // ✅ Marcar como atendido automáticamente
+        $derivacion->save();
+
+        return back()->with('success', '✅ Informe guardado y derivación marcada como atendida.');
+    }
+
+    public function descargarInformePDF($id)
+    {
+        $derivacion = Derivacion::with(['area', 'libroReclamacion'])->findOrFail($id);
+
+        // 🔥 Aquí estás aplicando el helper para convertir las imágenes a base64
+        $derivacion->informe = PdfHelper::reemplazarRutasImagenesHTML($derivacion->informe);
+
+        // ✅ Generación del PDF desde la vista, con el contenido ya procesado
+        $pdf = Pdf::loadView('pdf.declaracionJurada.informe_derivacion', compact('derivacion'))
+                ->setPaper('A4', 'portrait');
+
+        // ✅ Descarga del PDF con nombre dinámico
+        return $pdf->download("informe-derivacion-UMA-{$derivacion->id}.pdf");
+    }
+
+    public function subirInforme(Request $request, $id)
+    {
+        $request->validate([
+            'informe_responsable' => 'required|file|mimes:pdf,doc,docx|max:10240', // Máximo 10 MB
+        ]);
+
+        $reclamo = LibroReclamacion::findOrFail($id);
+
+        $archivo = $request->file('informe_responsable');
+        $fecha = now()->format('Y-m-d'); // Formato: 2025-06-11
+        $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
+
+        // Carpeta destino estructurada por ID y fecha
+        $ruta = "informes_responsables/{$id}/{$fecha}";
+        $archivo->storeAs($ruta, $nombreArchivo, 'public');
+
+        // Guardamos solo la ruta relativa
+        $reclamo->informe_responsable = "{$id}/{$fecha}/{$nombreArchivo}";
+        $reclamo->save();
+
+        return back()->with('success', '✅ Informe del responsable subido correctamente.');
+    }
+
 }
 

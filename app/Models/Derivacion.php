@@ -16,6 +16,7 @@ class Derivacion extends Model
         'area_id',
         'estado',
         'comentario',
+        'archivo',
         'fecha_derivacion'
     ];
 
