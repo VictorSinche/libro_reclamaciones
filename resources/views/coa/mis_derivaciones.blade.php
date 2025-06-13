@@ -212,13 +212,13 @@
                             <strong>Comentario:</strong> {{ $item->comentario ?? 'Sin comentario' }}<br>
                             <strong>Archivo:</strong>
                             @if ($item->archivo)
-                                <a href="{{ asset('storage/derivaciones/' . $item->archivo) }}"
+                                <a href="{{ asset('storage/' . $item->archivo) }}"
                                 target="_blank"
                                 class="text-blue-600 hover:underline">
-                                Ver archivo
+                                <i class="fa-solid fa-file-lines"></i> Ver archivo
                                 </a>
                             @else
-                                No se adjuntó archivo
+                                <span class="text-gray-500">No se adjuntó archivo</span>
                             @endif
                         </td>
                     </tr>

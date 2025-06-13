@@ -97,8 +97,10 @@ class LibroReclamacionController extends Controller
         $nombreArchivo = null;
         if ($request->hasFile('archivo')) {
             $archivo = $request->file('archivo');
-            $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
-            $archivo->storeAs('derivaciones', $nombreArchivo, 'public');
+            $fecha = now()->format('Y-m-d');
+            $carpeta = "derivaciones/{$request->reclamo_id}/{$request->area_id}/{$fecha}";
+            $nombreArchivo = $carpeta . '/' . time() . '_' . $archivo->getClientOriginalName();
+            $archivo->storeAs($carpeta, basename($nombreArchivo), 'public');
             Log::debug('📎 Archivo guardado: ' . $nombreArchivo);
         }
 
@@ -240,7 +242,7 @@ class LibroReclamacionController extends Controller
         $reclamo->informe_responsable = "{$id}/{$fecha}/{$nombreArchivo}";
         $reclamo->save();
 
-        return back()->with('success', '✅ Informe del responsable subido correctamente.');
+        return back()->with('successdrift', '✅ Informe del responsable subido correctamente.');
     }
 
 }

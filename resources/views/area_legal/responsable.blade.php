@@ -311,7 +311,7 @@
                                                 <p>
                                                     <strong>Archivo:</strong>
                                                     @if ($d->archivo)
-                                                        <a href="{{ asset('storage/derivaciones/' . $d->archivo) }}"
+                                                        <a href="{{ asset('storage/' . $d->archivo) }}"
                                                             target="_blank"
                                                             class="text-blue-600 hover:underline">
                                                             Ver archivo
@@ -361,38 +361,38 @@
     
     <!-- Modal Derivar -->
     <div id="modal-derivar" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
-        <button onclick="cerrarModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">&times;</button>
-        <h2 class="text-xl font-bold text-[#880E4F] mb-4">Derivar Hoja de Reclamación</h2>
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+            <button onclick="cerrarModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">&times;</button>
+            <h2 class="text-xl font-bold text-[#880E4F] mb-4">Derivar Hoja de Reclamación</h2>
 
-        <form id="form-derivar" method="POST" action="{{ route('derivar.reclamo') }}" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="reclamo_id" id="reclamo_id_modal">
+            <form id="form-derivar" method="POST" action="{{ route('derivar.reclamo') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="reclamo_id" id="reclamo_id_modal">
 
-            <div class="mb-4">
-                <label for="area_id" class="block font-semibold mb-1">Área destino:</label>
-                <select name="area_id" id="area_id" required class="w-full border border-gray-300 rounded px-3 py-2">
-                    @foreach ($areas as $area)
-                        <option value="{{ $area->id }}">{{ $area->nombre }}</option>
-                    @endforeach
-                </select>
-            </div>
+                <div class="mb-4">
+                    <label for="area_id" class="block font-semibold mb-1">Área destino:</label>
+                    <select name="area_id" id="area_id" required class="w-full border border-gray-300 rounded px-3 py-2">
+                        @foreach ($areas as $area)
+                            <option value="{{ $area->id }}">{{ $area->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <div class="mb-4">
-                <label for="observaciones" class="block font-semibold mb-1">Observaciones:</label>
-                <textarea name="observaciones" id="observaciones" rows="4" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Motivo o comentario adicional..."></textarea>
-            </div>
+                <div class="mb-4">
+                    <label for="observaciones" class="block font-semibold mb-1">Observaciones:</label>
+                    <textarea name="observaciones" id="observaciones" rows="4" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Motivo o comentario adicional..."></textarea>
+                </div>
 
-            <div class="mb-4">
-                <label for="archivo" class="block font-semibold mb-1">Adjuntar archivo:</label>
-                <input type="file" name="archivo" id="archivo" class="w-full border border-gray-300 rounded px-3 py-2">
-            </div>
+                <div class="mb-4">
+                    <label for="archivo" class="block font-semibold mb-1">Adjuntar archivo:</label>
+                    <input type="file" name="archivo" id="archivo" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
 
-            <div class="text-right">
-                <button type="submit" class="bg-[#880E4F] text-white px-4 py-2 rounded hover:bg-[#6a0c3d]">Derivar</button>
-            </div>
-        </form>
-    </div>
+                <div class="text-right">
+                    <button type="submit" class="bg-[#880E4F] text-white px-4 py-2 rounded hover:bg-[#6a0c3d]">Derivar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -418,6 +418,17 @@
         </script>
     @endif
 
+    @if(session('successdrift'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Envio exitoso!',
+                text: '{{ session('successdrift') }}',
+                confirmButtonColor: '#880E4F'
+            });
+        </script>
+    @endif
+
     @if ($errors->any())
         <script>
             let errores = @json($errors->all());
@@ -430,8 +441,38 @@
         </script>
     @endif
     <script>
-        document.getElementById('form-derivar').addEventListener('submit', function () {
-            document.getElementById('loader-wrapper').classList.remove('hidden');
+        const derivacionesExistentes = @json(
+            $reclamos->pluck('derivaciones')->flatten()->groupBy('libro_reclamacion_id')
+        );
+
+        document.getElementById('form-derivar').addEventListener('submit', function (e) {
+            e.preventDefault(); // Evita envío inmediato
+            const reclamoId = document.getElementById('reclamo_id_modal').value;
+            const areaIdSeleccionada = document.getElementById('area_id').value;
+
+            const derivaciones = derivacionesExistentes[reclamoId] || [];
+            const yaDerivado = derivaciones.some(d => d.area_id == areaIdSeleccionada);
+
+            if (yaDerivado) {
+                Swal.fire({
+                    title: '¿Deseas continuar?',
+                    text: '⚠️ Ya se ha derivado este reclamo a esta área anteriormente.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, derivar otra vez',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('loader-wrapper').classList.remove('hidden');
+                        e.target.submit(); // Envía el form
+                    }
+                });
+            } else {
+                document.getElementById('loader-wrapper').classList.remove('hidden');
+                e.target.submit();
+            }
         });
     </script>
     <script>
