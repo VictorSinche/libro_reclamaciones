@@ -155,6 +155,137 @@ class LibroReclamacionController extends Controller
     }
 
 
+    public function verPorAreaCoa()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
+
+        $areas = Area::all();
+
+            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+    }
+    
+    public function verPorAreaTi()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
+
+        $areas = Area::all();
+
+            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+    }
+
+    public function verPorAreaOsar()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
+
+        $areas = Area::all();
+
+            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+    }
+
+    public function verPorAreaTesoreria()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
+
+        $areas = Area::all();
+
+            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+    }
+
+    public function verPorAreaAdmi()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
+
+        $areas = Area::all();
+
+            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+    }
+
+    public function verPorAreaEscuela()
+    {
+        
+        $areaId = session('area_id');
+        if (!$areaId) {
+            return back()->with('error', 'Área no asignada al usuario.');
+        }
+
+        $derivaciones = Derivacion::with('libroReclamacion')
+            ->where('area_id', $areaId)
+            ->orderByDesc('created_at')
+            ->get();
+        
+        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
+            ->orderBy('fecha_evento', 'desc')
+            ->paginate(10);
+
+        $areas = Area::all();
+
+            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+    }
     // public function marcarComoAtendido($id)
     // {
     //     $derivacion = Derivacion::findOrFail($id);

@@ -298,6 +298,15 @@
                     </a>            
                   </li>
                 @endif
+                @if(tienePermisoGlobal('ADM.4'))
+                  <li>
+                    <a href="{{ route('admi.derivaciones') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('admi.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Hojas reclamaciones derivadas
+                    </a>            
+                  </li>
+                @endif
                   {{-- <li>
                     <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                       <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -381,10 +390,10 @@
             <ul id="submenu-osar" class="py-2 space-y-2 {{ Request::routeIs('osar.*') ? '' : 'hidden' }}">
             @if (tienePermisoGlobal('OSA.1'))
               <li>
-                <a href="{{ route('osar.listado') }}" 
+                <a href="{{ route('osar.derivaciones') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('osar.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Listado
+                  {{ Request::routeIs('osar.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Hojas reclamaciones derivadas
                 </a>
               </li>
               @endif
@@ -408,17 +417,42 @@
             <ul id="submenu-tesoreria" class="py-2 space-y-2 {{ Request::routeIs('tesoreria.*') ? '' : 'hidden' }}">
               @if (tienePermisoGlobal('TES.1'))
                 <li>
-                <a href="{{ route('tesoreria.listado') }}" 
+                <a href="{{ route('teso.derivaciones') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('tesoreria.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Listado
+                  {{ Request::routeIs('teso.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Hojas reclamaciones derivadas
                 </a>              
               </li>
               @endif
             </ul>
           </li>
           @endif
-
+          @if (tieneAlgunPermisoGlobal(['DE.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-escuela" data-collapse-toggle="submenu-escuela">
+              
+              <i class="fa-solid fa-credit-card text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Direccion de escuela</span>
+              
+              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+              </svg>
+            </button>
+          
+            <ul id="submenu-escuela" class="py-2 space-y-2 {{ Request::routeIs('escuela.*') ? '' : 'hidden' }}">
+              @if (tienePermisoGlobal('TES.1'))
+                <li>
+                <a href="{{ route('dies.derivaciones') }}" 
+                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                  {{ Request::routeIs('dies.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Hojas reclamaciones derivadas
+                </a>              
+              </li>
+              @endif
+            </ul>
+          </li>
+          @endif
         </ul>
     </div>
   </aside>

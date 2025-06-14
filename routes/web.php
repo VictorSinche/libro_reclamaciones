@@ -46,7 +46,8 @@ Route::get('/mis-derivaciones-coa', [LibroReclamacionController::class, 'verPorA
 Route::get('/mis-derivaciones-ti', [LibroReclamacionController::class, 'verPorAreaTi'])->name('ti.derivaciones');
 Route::get('/mis-derivaciones-osar', [LibroReclamacionController::class, 'verPorAreaOsar'])->name('osar.derivaciones');
 Route::get('/mis-derivaciones-admi', [LibroReclamacionController::class, 'verPorAreaAdmi'])->name('admi.derivaciones');
-Route::get('/mis-derivaciones-dies', [LibroReclamacionController::class, 'verPorAreaDies'])->name('dies.derivaciones');
+Route::get('/mis-derivaciones-teso', [LibroReclamacionController::class, 'verPorAreaTesoreria'])->name('teso.derivaciones');
+Route::get('/mis-derivaciones-dies', [LibroReclamacionController::class, 'verPorAreaEscuela'])->name('dies.derivaciones');
 
 Route::post('/derivaciones/{id}/completar', [LibroReclamacionController::class, 'marcarComoAtendido'])->name('derivacion.completar');
 Route::post('/derivacion/informe', [LibroReclamacionController::class, 'guardarInforme'])->name('derivacion.guardar_informe');
