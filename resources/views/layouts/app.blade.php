@@ -150,7 +150,6 @@
           </li>
           @endif
 
-
         @php
           use App\Models\InfoPostulante;
 
@@ -248,6 +247,32 @@
                   <a href="{{ route('arealegal.libroRe') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                     {{ Request::routeIs('arealegal.libroRe') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Libros de reclamaciones
+                  </a>              
+                </li>
+              @endif
+            </ul>
+          </li>
+          @endif
+          @if (tieneAlgunPermisoGlobal(['TI.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-ti" data-collapse-toggle="submenu-ti">
+              
+              <i class="fa-solid fa-user-tie fa-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Area legal</span>
+              
+              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+              </svg>
+            </button>
+          
+            <ul id="submenu-ti" class="py-2 space-y-2 {{ Request::routeIs('ti.*') ? '' : 'hidden' }}">
+              @if (tienePermisoGlobal('DIR.1'))
+                <li>
+                  <a href="{{ route('ti.derivaciones') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('ti.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     Libros de reclamaciones
                   </a>              
                 </li>

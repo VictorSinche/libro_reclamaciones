@@ -196,7 +196,7 @@ class LibroReclamacionController extends Controller
 
         $areas = Area::all();
 
-            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+            return view('ti.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 
     public function verPorAreaOsar()
@@ -218,7 +218,7 @@ class LibroReclamacionController extends Controller
 
         $areas = Area::all();
 
-            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+            return view('osar.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 
     public function verPorAreaTesoreria()
@@ -240,7 +240,7 @@ class LibroReclamacionController extends Controller
 
         $areas = Area::all();
 
-            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+            return view('tesoreria.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 
     public function verPorAreaAdmi()
@@ -262,7 +262,7 @@ class LibroReclamacionController extends Controller
 
         $areas = Area::all();
 
-            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
+            return view('admision.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 
     public function verPorAreaEscuela()
