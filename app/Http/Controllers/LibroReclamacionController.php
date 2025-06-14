@@ -12,8 +12,7 @@ use App\Mail\NotificarDerivacion;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\PdfHelper;
-use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
-
+use App\Mail\InformeCompletado;
 class LibroReclamacionController extends Controller
 {
 
@@ -155,39 +154,33 @@ class LibroReclamacionController extends Controller
             return view('libro_reclamaciones.derivaciones.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 
-    public function verPorAreaCoa()
-    {
-        
-        $areaId = session('area_id');
-        if (!$areaId) {
-            return back()->with('error', 'Área no asignada al usuario.');
-        }
 
-        $derivaciones = Derivacion::with('libroReclamacion')
-            ->where('area_id', $areaId)
-            ->orderByDesc('created_at')
-            ->get();
-        
-        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
-            ->paginate(10);
+    // public function marcarComoAtendido($id)
+    // {
+    //     $derivacion = Derivacion::findOrFail($id);
+    //     $derivacion->estado = 2; // Atendido
+    //     $derivacion->save();
 
-        $areas = Area::all();
+    //     $reclamo = $derivacion -> libroReclamacion;
+    //     if($reclamo){
+    //         $reclamo -> estado= 2;
+    //         $reclamo ->save();
+    //     }
 
-            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
-    }
+    //     return back()->with('success', '✅ Derivación marcada como atendida.');
+    // }
 
     public function marcarComoAtendido($id)
     {
         $derivacion = Derivacion::findOrFail($id);
-        $derivacion->estado = 2; // Atendido
+        $derivacion->estado = 2; // Marcar como completado
         $derivacion->save();
 
-        $reclamo = $derivacion -> libroReclamacion;
-        if($reclamo){
-            $reclamo -> estado= 2;
-            $reclamo ->save();
-        }
+        // Obtener el correo desde la configuración
+        $correoResponsable = env('MAIL_FROM_ADDRESS'); // Obtener desde el .env
+
+        // Enviar el correo a MAIL_FROM_ADDRESS
+        Mail::to($correoResponsable)->send(new InformeCompletado($derivacion));
 
         return back()->with('success', '✅ Derivación marcada como atendida.');
     }
