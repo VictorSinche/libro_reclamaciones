@@ -35,7 +35,7 @@ class ItemSeeder extends Seeder
             ['module_codigo' => 'COA', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'COA.1'],
 
             // OSAR
-            ['module_codigo' => 'OSA', 'nombre' => 'Listado OSAR', 'codigo' => 'OSA.1'],
+            ['module_codigo' => 'OSA', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'OSA.1'],
 
             // Tesorería
             ['module_codigo' => 'TES', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TES.1'],
