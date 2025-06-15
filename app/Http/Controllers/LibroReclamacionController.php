@@ -154,7 +154,6 @@ class LibroReclamacionController extends Controller
             return view('libro_reclamaciones.derivaciones.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 
-
     public function verPorAreaCoa()
     {
         
@@ -176,7 +175,7 @@ class LibroReclamacionController extends Controller
 
             return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
-    
+
     public function verPorAreaTi()
     {
         

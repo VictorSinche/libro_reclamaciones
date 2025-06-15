@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="max-w-[100%] mx-auto">
     <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-xl bg-clip-border">
         <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
@@ -123,89 +124,317 @@
                 <tbody>
                     @foreach ($derivaciones as $item)
                     <tr>
+                        <!-- Datos principales -->
                         <td class="p-4 border-b border-slate-200">
                             <div class="flex flex-col">
-                                <p class="text-sm font-semibold text-slate-700">
-                                    {{ $item->id }}
-                                </p>
+                                <p class="text-sm font-semibold text-slate-700">{{ $item->id }}</p>
                             </div>
                         </td>
                         <td class="p-4 border-b border-slate-200">
                             <div class="flex items-center gap-3">
                                 <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        {{ Str::title($item->libroReclamacion->nombre_apellido) }}
-                                    </p>
-                                    <p class="text-sm text-slate-500">
-                                        {{ $item->libroReclamacion->correo }}
-                                    </p>
+                                    <p class="text-sm font-semibold text-slate-700">{{ Str::title($item->libroReclamacion->nombre_apellido) }}</p>
+                                    <p class="text-sm text-slate-500">{{ $item->libroReclamacion->correo }}</p>
                                 </div>
                             </div>
                         </td>
                         <td class="p-4 border-b border-slate-200">
-                            <div class="flex flex-col">
-                                <p class="text-sm font-semibold text-slate-700">
-                                    {{ $item->libroReclamacion->nro_doc }}
-                                </p>
-                            </div>
+                            <p class="text-sm font-semibold text-slate-700">{{ $item->libroReclamacion->nro_doc }}</p>
                         </td>
                         <td class="p-4 border-b border-slate-200">
-                            <div class="flex flex-col">
-                                <p class="text-sm font-semibold text-slate-700">
-                                    {{ ucfirst($item->libroReclamacion->motivo_reclamo) }}
-                                </p>
-                            </div>
+                            <p class="text-sm font-semibold text-slate-700">{{ ucfirst($item->libroReclamacion->motivo_reclamo) }}</p>
                         </td>
                         <td class="p-4 border-b border-slate-200">
-                            <div class="flex flex-col">
-                                <p class="text-sm font-semibold text-slate-700">
-                                    {{ \Carbon\Carbon::parse($item->fecha_evento)->format('d/m/Y') }}
-                                </p>
-                            </div>
+                            <p class="text-sm font-semibold text-slate-700">{{ \Carbon\Carbon::parse($item->fecha_derivacion)->format('d/m/Y') }}</p>
                         </td>
                         <td class="p-4 border-b border-slate-200">
-                            <div class="flex flex-col">
-                                <p class="text-sm font-semibold text-slate-700">
-                                    {{ ucfirst($item->estado) }}
-                                </p>
-                            </div>
+                            @php
+                                $estados = [
+                                    '0' => ['label' => 'Pendiente', 'color' => 'bg-gray-200 text-gray-800'],
+                                    '1' => ['label' => 'En proceso', 'color' => 'bg-yellow-200 text-yellow-800'],
+                                    '2' => ['label' => 'Atendido', 'color' => 'bg-green-200 text-green-800'],
+                                ];
+                            @endphp
+
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $estados[$item->estado]['color'] }}">
+                                {{ $estados[$item->estado]['label'] }}
+                            </span>
                         </td>
                         <td class="p-4 border-b border-slate-200">
-                            {{-- Botón imprimir --}}
-                            <a href="{{ route('libro-reclamaciones.pdf', ['id' => $item->libro_reclamacion_id]) }}"
+                            <!-- Botón imprimir -->
+                            <a href="{{ route('libro-reclamaciones.pdf', ['id' => $item->libro_reclamacion_id]) }}" target="_blank"
                                 title="Imprimir"
-                                target="_black"
                                 class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition">
                                 <i class="fa-solid fa-print"></i>
                             </a>
-                            {{-- Botón derivar --}}
-                            {{-- <a href="javascript:void(0)" title="Derivar" onclick="abrirModal({{ $item->id }})"
-                                class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition">
-                                <i class="fas fa-share"></i>
-                            </a> --}}
+                            <!-- Botón para mostrar detalles -->
+                            <a href="javascript:void(0)" title="Información"
+                                onclick="toggleDetalle({{ $item->id }})"
+                                class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-blue-600 hover:bg-slate-900/10 transition">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </a>
+                            <!-- Botón de completar derivación -->
+                            @if ($item->estado == 1)
+                                <form id="form-marcar-{{ $item->id }}" method="POST" action="{{ route('derivacion.completar', $item->id) }}" class="inline">
+                                    @csrf
+                                    <button type="button" title="Marcar como atendido"
+                                        onclick="confirmarAtencion({{ $item->id }})"
+                                        class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-green-700 hover:bg-green-100 transition">
+                                        <i class="fa-solid fa-check-circle"></i>
+                                    </button>
+                                </form>
+                            @endif
+
+                            <!-- Botón para abrir modal de informe -->
+                            @if ($item->estado != 2) {{-- solo si aún no está atendido --}}
+                            <button 
+                                data-id="{{ $item->id }}" 
+                                data-informe="{{ $item->informe }}" 
+                                onclick="abrirModalInforme(this)"
+                                class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-indigo-700 hover:bg-indigo-100 transition" 
+                                title="Redactar informe">
+                                <i class="fa-solid fa-file-pen"></i>
+                            </button>
+                            @endif
+                            @if ($item->informe)
+                                <a href="{{ route('derivacion.informe_pdf', $item->id) }}" target="_blank"
+                                    class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-red-700 hover:bg-red-100 transition"
+                                    title="Descargar informe PDF">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </a>
+                            @endif
+                        </td>
+                    </tr>
+
+                    <!-- Fila de detalles ocultable -->
+                    <tr id="detalle-{{ $item->id }}" class="bg-gray-50 text-sm text-slate-700 hidden">
+                        <td colspan="7" class="p-4 border-b border-slate-200">
+                            <strong>Comentario:</strong> {{ $item->comentario ?? 'Sin comentario' }}<br>
+                            <strong>Archivo:</strong>
+                            @if ($item->archivo)
+                                <a href="{{ asset('storage/' . $item->archivo) }}"
+                                target="_blank"
+                                class="text-blue-600 hover:underline">
+                                <i class="fa-solid fa-file-lines"></i> Ver archivo
+                                </a>
+                            @else
+                                <span class="text-gray-500">No se adjuntó archivo</span>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        <div class="flex items-center justify-between p-3">
-            <p class="block text-sm text-slate-500">
-                Página 1 de 50
-            </p>
+            <div class="flex items-center justify-between p-3">
+                <p class="block text-sm text-slate-500">
+                    Página {{ $reclamos->currentPage() }} de {{ $reclamos->lastPage() }}
+                </p>
                 <div class="flex gap-1">
-                <button 
-                {{-- (click)="anteriorPagina()" [disabled]="paginaActual === 1" --}}
-                    class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 disabled:opacity-50">
-                    Anterior
-                </button>
-                <button 
-                {{-- (click)="siguientePagina()" [disabled]="paginaActual === totalPaginas" --}}
-                    class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 disabled:opacity-50">
-                    Siguiente
-                </button>
+                    {{-- Botón Anterior --}}
+                    <a href="{{ $reclamos->previousPageUrl() }}" 
+                    class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 {{ $reclamos->onFirstPage() ? 'opacity-50 pointer-events-none' : '' }}">
+                        Anterior
+                    </a>
+
+                    {{-- Botón Siguiente --}}
+                    <a href="{{ $reclamos->nextPageUrl() }}" 
+                    class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 {{ !$reclamos->hasMorePages() ? 'opacity-50 pointer-events-none' : '' }}">
+                        Siguiente
+                    </a>
                 </div>
             </div>
         </div>
 </div>
+
+@if(session('success'))
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    });
+</script>
+@endif
+
 @endsection
+
+<script>
+    function toggleDetalle(id) {
+        const fila = document.getElementById(`detalle-${id}`);
+        fila.classList.toggle('hidden');
+    }
+</script>
+
+<!-- Modal de informe avanzado -->
+<div id="modalInforme" class="fixed inset-0 bg-black/40 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white w-full max-w-5xl max-h-[90vh] overflow-auto p-6 rounded-lg shadow-xl relative animate__animated animate__fadeIn">
+        <h2 class="text-2xl font-bold mb-4 text-indigo-700 flex justify-between items-center">
+            Redactar Informe del Área
+            <button onclick="cerrarModalInforme()" class="text-red-500 hover:text-red-700 text-xl">&times;</button>
+        </h2>
+        <form method="POST" action="{{ route('derivacion.guardar_informe') }}">
+            @csrf
+            <input type="hidden" name="id" id="derivacionId">
+
+            <textarea name="informe" id="editor" class="w-full h-[500px] border border-gray-300"></textarea>
+
+            <div class="flex justify-end mt-6 gap-2">
+                <button type="button" onclick="cerrarModalInforme()" class="px-5 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">
+                    Cancelar
+                </button>
+                <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                    Guardar informe
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- CKEditor desde CDN -->
+{{-- <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@36.0.1/build/ckeditor.js"></script>
+
+<script>
+    let editorInstance;
+
+    // Adaptador personalizado para subir imágenes
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+
+        upload() {
+            return this.loader.file.then(file => new Promise((resolve, reject) => {
+                const data = new FormData();
+                data.append('upload', file);
+
+                fetch('/ckeditor/upload', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    resolve({ default: data.url });
+                })
+                .catch(error => {
+                    reject(error);
+                });
+            }));
+        }
+
+        abort() {}
+    }
+
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader);
+        };
+    }
+
+    // Abrir el modal e inicializar CKEditor
+    function abrirModalInforme(btn) {
+        const id = btn.getAttribute('data-id');
+        const contenido = btn.getAttribute('data-informe') || '';
+
+        document.getElementById('derivacionId').value = id;
+        document.getElementById('modalInforme').classList.remove('hidden');
+
+        // Si ya existe una instancia, destruirla
+        if (editorInstance) {
+            editorInstance.destroy().then(() => initEditor(contenido));
+        } else {
+            initEditor(contenido);
+        }
+    }
+
+    // Crear CKEditor
+    function initEditor(contenido) {
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                extraPlugins: [ MyCustomUploadAdapterPlugin ],
+                toolbar: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                    'alignment', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'imageUpload', '|',
+                    'insertTable', '|',
+                    'undo', 'redo'
+                ],
+                image: {
+                    resizeUnit: '%',
+                    resizeOptions: [
+                        {
+                            name: 'resizeImage:original',
+                            label: 'Original',
+                            value: null
+                        },
+                        {
+                            name: 'resizeImage:50',
+                            label: '50%',
+                            value: '50'
+                        },
+                        {
+                            name: 'resizeImage:75',
+                            label: '75%',
+                            value: '75'
+                        }
+                    ],
+                    toolbar: [
+                        'imageStyle:alignLeft',
+                        'imageStyle:alignCenter',
+                        'imageStyle:alignRight',
+                        '|',
+                        'resizeImage'
+                    ]
+                },
+                table: {
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+                }
+            })
+            .then(editor => {
+                editor.setData(contenido);
+                editorInstance = editor;
+            })
+            .catch(error => {
+                console.error('Error al cargar CKEditor:', error);
+            });
+    }
+    // Cerrar el modal
+    function cerrarModalInforme() {
+        if (editorInstance) {
+            editorInstance.destroy().then(() => {
+                editorInstance = null;
+            });
+        }
+        document.getElementById('modalInforme').classList.add('hidden');
+    }
+</script>
+
+<script>
+    function confirmarAtencion(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Una vez marcado como atendido, ya no podrás editar el informe.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#16a34a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('form-marcar-' + id).submit();
+            }
+        });
+    }
+</script>

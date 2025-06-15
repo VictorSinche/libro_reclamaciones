@@ -260,7 +260,7 @@
               
               <i class="fa-solid fa-user-tie fa-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
               
-              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Area legal</span>
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">TI</span>
               
               <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
@@ -268,7 +268,7 @@
             </button>
           
             <ul id="submenu-ti" class="py-2 space-y-2 {{ Request::routeIs('ti.*') ? '' : 'hidden' }}">
-              @if (tienePermisoGlobal('DIR.1'))
+              @if (tienePermisoGlobal('TI.1'))
                 <li>
                   <a href="{{ route('ti.derivaciones') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -278,7 +278,7 @@
                 </li>
               @endif
             </ul>
-          </li>
+          </li>   
           @endif
 
           @if (tieneAlgunPermisoGlobal(['ADM.1', 'ADM.2', 'ADM.3', 'ADM.4']))
