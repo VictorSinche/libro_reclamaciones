@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,ts}', './resources/**/*.blade.php'], // puedes incluir Blade si estás en Laravel
+  content: [
+    './resources/**/*.blade.php',
+    './resources/**/*.js',
+    './resources/**/*.vue',
+    './src/**/*.{html,ts}', // opcional si usas archivos fuera de Laravel
+  ],
   theme: {
     extend: {
       colors: {
@@ -13,10 +18,4 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('flowbite/plugin'),
   ],
-  content: [
-  './resources/**/*.blade.php',
-  './resources/**/*.js',
-  './resources/**/*.vue',
-],
-
-}
+};
