@@ -19,6 +19,7 @@ class UserAdmin extends Authenticatable
         'grado',
         'estado',
         'password',
+        'area_id'
     ];
 
     protected $hidden = [
@@ -31,4 +32,10 @@ class UserAdmin extends Authenticatable
     {
         return "{$this->nombre} {$this->apellidos}";
     }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
+
 }

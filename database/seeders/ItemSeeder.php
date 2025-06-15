@@ -24,19 +24,30 @@ class ItemSeeder extends Seeder
 
             // Admisión
             ['module_codigo' => 'ADM', 'nombre' => 'Lista de postulantes', 'codigo' => 'ADM.1'],
-            ['module_codigo' => 'ADM', 'nombre' => 'Historial declaración jurada', 'codigo' => 'ADM.2'],
-
+            ['module_codigo' => 'ADM', 'nombre' => 'Historial declaración jurada', 'codigo' => 'ADM.2'],            
+            ['module_codigo' => 'ADM', 'nombre' => 'Reclamaciones derivadas', 'codigo' => 'ADM.3'],
+            ['module_codigo' => 'ADM', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'ADM.4'],
+            
             // Director
             ['module_codigo' => 'DIR', 'nombre' => 'Convalidación', 'codigo' => 'DIR.1'],
 
             // COA
-            ['module_codigo' => 'COA', 'nombre' => 'Listado COA', 'codigo' => 'COA.1'],
+            ['module_codigo' => 'COA', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'COA.1'],
 
             // OSAR
-            ['module_codigo' => 'OSA', 'nombre' => 'Listado OSAR', 'codigo' => 'OSA.1'],
+            ['module_codigo' => 'OSA', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'OSA.1'],
 
             // Tesorería
-            ['module_codigo' => 'TES', 'nombre' => 'Listado Tesorería', 'codigo' => 'TES.1'],
+            ['module_codigo' => 'TES', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TES.1'],
+
+            // Area responsable
+            ['module_codigo' => 'AL', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'AL.1'],
+            
+            // TI
+            ['module_codigo' => 'TI', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TI.1'],
+
+            // Direccion de escuela
+            ['module_codigo' => 'DE', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'DE.1'],
         ];
 
         foreach ($items as $item) {

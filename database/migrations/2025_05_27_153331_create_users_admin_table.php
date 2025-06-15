@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('grado')->nullable(); // ejem: Lic., Ing., Dra.
             $table->boolean('estado')->default(true); // true = activo, false = inactivo
             $table->string('password');
+            $table->unsignedBigInteger('area_id')->nullable();
+            $table->foreign('area_id')->references('id')->on('areas');
             $table->timestamps();
         });
     }
