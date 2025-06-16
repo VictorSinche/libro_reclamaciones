@@ -42,7 +42,7 @@ Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 
 Route::post('/derivar-reclamo', [LibroReclamacionController::class, 'guardarDerivacion'])->name('derivar.reclamo');
 Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
 
-Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])->name('admision.derivaciones');
+// Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])->name('admision.derivaciones');
 Route::get('/mis-derivaciones-coa', [LibroReclamacionController::class, 'verPorArea'])->name('coa.derivaciones');
 Route::get('/mis-derivaciones-ti', [LibroReclamacionController::class, 'verPorArea'])->name('ti.derivaciones');
 Route::get('/mis-derivaciones-osar', [LibroReclamacionController::class, 'verPorArea'])->name('osar.derivaciones');

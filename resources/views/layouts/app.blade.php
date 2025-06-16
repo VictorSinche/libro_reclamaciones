@@ -474,7 +474,7 @@
             </button>
           
             <ul id="submenu-escuela" class="py-2 space-y-2 {{ Request::routeIs('escuela.*') ? '' : 'hidden' }}">
-              @if (tienePermisoGlobal('TES.1'))
+              @if (tienePermisoGlobal('DE.1'))
                 <li>
                 <a href="{{ route('dies.derivaciones') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 

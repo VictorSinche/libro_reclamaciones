@@ -203,13 +203,13 @@
                                     </p>
                                 </div>
                             </td>
-                            <td class="p-4 border-b border-slate-200">
+                            {{-- <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
                                     <p class="text-sm font-semibold text-slate-700">
                                         {{ ucfirst($reclamo->estado) }}
                                     </p>
                                 </div>
-                            </td>
+                            </td> --}}
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
                                     <p class="text-sm font-semibold text-slate-700">
