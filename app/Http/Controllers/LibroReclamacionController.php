@@ -16,16 +16,10 @@ use App\Mail\InformeCompletado;
 class LibroReclamacionController extends Controller
 {
 
-    // public function registro()
-    // {
-    //     return view('libro_reclamaciones.registro_lire');
-    // }
-
     public function registro()
     {
-        return 'Laravel en Railway funciona';
+        return view('libro_reclamaciones.registro_lire');
     }
-
 
     public function store(Request $request)
     {
