@@ -122,6 +122,7 @@ class LibroReclamacionController extends Controller
         // Buscar usuario del área y enviar notificación
         $usuario = UserAdmin::where('area_id', $request->area_id)->first();
         if ($usuario) {
+            Log::debug('🛠 Mailer configurado: ' . config('mail.mailer')); // ← AQUI
             Log::debug('📧 Enviando correo a: ' . $usuario->email);
             Mail::to($usuario->email)->send(new NotificarDerivacion($reclamo, $usuario->area));
             Log::debug('✅ Correo enviado correctamente');
