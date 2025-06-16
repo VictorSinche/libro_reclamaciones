@@ -14,12 +14,15 @@ else
     echo "✅ Enlace simbólico 'public/storage' ya existe."
 fi
 
-# Limpiar y cachear configuración
 echo "🧹 Limpiando cachés de Laravel..."
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 php artisan cache:clear
+
+# Mostrar logs de Laravel
+touch storage/logs/laravel.log
+tail -f storage/logs/laravel.log &
 
 echo "🚀 Ejecutando servidor Laravel en el puerto 8080..."
 php -S 0.0.0.0:8080 -t public
