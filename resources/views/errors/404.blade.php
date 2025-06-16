@@ -1,4 +1,5 @@
-@vite('resources/css/app.css')
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
 
 <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
 <title>UMA | 404</title>

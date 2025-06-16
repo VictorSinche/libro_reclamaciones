@@ -1,4 +1,5 @@
-@vite('resources/css/app.css')
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
 
 <title>Libro de Reclamaciones - Universidad María Auxiliadora</title>
 <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
