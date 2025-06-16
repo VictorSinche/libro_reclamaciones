@@ -5,10 +5,11 @@ FROM php:8.2-cli
 
 # Instalar dependencias del sistema y extensiones necesarias para Laravel
 RUN apt-get update && apt-get install -y \
-    git unzip zip curl libpng-dev libjpeg-dev libfreetype6-dev \
+    git unzip zip curl \
+    libpng-dev libjpeg-dev libfreetype6-dev \
     libonig-dev libxml2-dev libzip-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql gd mbstring exif pcntl bcmath zip tokenizer ctype fileinfo xml \
+    && docker-php-ext-install pdo_mysql gd mbstring exif pcntl bcmath zip xml \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalar Composer
