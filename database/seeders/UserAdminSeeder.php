@@ -21,7 +21,7 @@ class UserAdminSeeder extends Seeder
                 'genero'    => 'Masculino',
                 'grado'     => 'Admin',
                 'estado'    => true,
-                'password'  => Hash::make('admin123'), // puedes usar env('DEFAULT_ADMIN_PASS') si deseas
+                'password'  => Hash::make('xyz123'), // puedes usar env('DEFAULT_ADMIN_PASS') si deseas
             ]
         );
     }
