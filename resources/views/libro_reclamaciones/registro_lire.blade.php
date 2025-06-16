@@ -139,6 +139,7 @@
 
         campos.forEach(campo => {
             const name = campo.name;
+            if (name === 'apoderado') return;
             if (validados.has(name)) return; // ya lo revisamos
 
             validados.add(name);
@@ -220,17 +221,17 @@
     mostrarPaso(pasoActual);
 
     document.getElementById('btn-enviar').addEventListener('click', () => {
-      if (!validarPaso(pasoActual)) {
-          Swal.fire({
-              icon: 'error',
-              title: 'Faltan campos',
-              text: 'Por favor completa todos los campos requeridos antes de enviar el formulario.'
-          });
-          return;
-      }
+        if (!validarPaso(pasoActual)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Faltan campos',
+                text: 'Por favor completa todos los campos requeridos antes de enviar el formulario.'
+            });
+            return;
+        }
 
-      // Si todo OK, enviamos el formulario
-      document.getElementById('formulario-reclamo').submit();
-  });
+        // Si todo OK, enviamos el formulario
+        document.getElementById('formulario-reclamo').submit();
+    });
 
 </script>

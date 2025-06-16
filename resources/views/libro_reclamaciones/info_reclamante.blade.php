@@ -161,7 +161,7 @@
 <!-- Campo: Nombre del padre, madre o apoderado -->
 <div>
     <label for="apoderado" class="block text-md font-normal text-gray-800 mb-1">
-        12. Nombre del padre, madre o apoderado (en caso sea menor de edad). <span class="text-red-700">*</span>
+        12. Nombre del padre, madre o apoderado (en caso sea menor de edad).
     </label>
 
     <input

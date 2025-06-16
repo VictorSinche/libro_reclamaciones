@@ -249,7 +249,7 @@
             </button>
           
             <ul id="submenu-arealegal" class="py-2 space-y-2 {{ Request::routeIs('arealegal.*') ? '' : 'hidden' }}">
-              @if (tienePermisoGlobal('DIR.1'))
+              @if (tienePermisoGlobal('AL.1'))
                 <li>
                   <a href="{{ route('arealegal.libroRe') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 

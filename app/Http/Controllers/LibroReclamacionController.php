@@ -286,20 +286,6 @@ class LibroReclamacionController extends Controller
 
             return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
-    // public function marcarComoAtendido($id)
-    // {
-    //     $derivacion = Derivacion::findOrFail($id);
-    //     $derivacion->estado = 2; // Atendido
-    //     $derivacion->save();
-
-    //     $reclamo = $derivacion -> libroReclamacion;
-    //     if($reclamo){
-    //         $reclamo -> estado= 2;
-    //         $reclamo ->save();
-    //     }
-
-    //     return back()->with('success', '✅ Derivación marcada como atendida.');
-    // }
 
     public function marcarComoAtendido($id)
     {

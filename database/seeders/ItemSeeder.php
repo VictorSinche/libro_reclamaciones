@@ -41,7 +41,7 @@ class ItemSeeder extends Seeder
             ['module_codigo' => 'TES', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TES.1'],
 
             // Area responsable
-            ['module_codigo' => 'AL', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'AL.1'],
+            ['module_codigo' => 'AL', 'nombre' => 'Hojas reclamaciones', 'codigo' => 'AL.1'],
             
             // TI
             ['module_codigo' => 'TI', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TI.1'],

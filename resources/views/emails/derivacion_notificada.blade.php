@@ -12,7 +12,7 @@
 </ul>
 
 <p>Por favor, ingrese al sistema para revisar los detalles completos y proceder con el tratamiento adecuado de la solicitud.</p>
-<a href="{{ url('http://127.0.0.1:8000/login') }}" style="display:inline-block; padding:10px 20px; background:#1e293b; color:#fff; text-decoration:none; border-radius:5px;">Ir al sistema</a>
+<a href="{{ url('https://libroreclamaciones.up.railway.app/login') }}" style="display:inline-block; padding:10px 20px; background:#1e293b; color:#fff; text-decoration:none; border-radius:5px;">Ir al sistema</a>
 <p style="margin-top: 20px;">Gracias por su atención.</p>
 
 <hr>
