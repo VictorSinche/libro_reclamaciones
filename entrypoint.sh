@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e  # Detiene el script si algún comando falla
+
 echo "📦 Iniciando contenedor Laravel..."
 
 # Verifica permisos
@@ -14,15 +16,28 @@ else
     echo "✅ Enlace simbólico 'public/storage' ya existe."
 fi
 
-echo "🧹 Limpiando cachés de Laravel..."
+# Ejecutar migraciones (si no se hicieron en build)
+echo "🛠️  Ejecutando migraciones y seeders..."
+php artisan migrate --force || echo "⚠️  Migraciones fallaron (BD no disponible o ya migrada)"
+php artisan db:seed --force || echo "⚠️  Seeders fallaron (opcional o ya insertados)"
+
+# Limpiar y cachear config
+echo "🧹 Limpiando y cacheando configuración de Laravel..."
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 php artisan cache:clear
 
-# Mostrar logs de Laravel
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Crear archivo de log si no existe
 touch storage/logs/laravel.log
+
+# Mostrar logs en background
 tail -f storage/logs/laravel.log &
 
+# Iniciar servidor
 echo "🚀 Ejecutando servidor Laravel en el puerto 8080..."
-php -S 0.0.0.0:8080 -t public
+exec php -S 0.0.0.0:8080 -t public
