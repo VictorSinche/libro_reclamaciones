@@ -94,7 +94,7 @@ Route::post('/usuarios-admin/store', [PostulanteLoginController::class, 'createU
 */
 Route::middleware('auth.postulante')->group(function () {
 
-    Route::get('/dashboard', fn() => view('dashboard.dashboard'))->name('dashboard.dashboard');
+    Route::get('/dashboard', [LibroReclamacionController::class, 'dashboard'])->name('dashboard.dashboard');
     Route::get('/documentos-json/{dni}', [InfoPostulanteController::class, 'documentosJson']);
 
     Route::get('/especialidades-por-facultad', [InfoPostulanteController::class, 'getEspecialidades'])->name('especialidades.por.facultad');

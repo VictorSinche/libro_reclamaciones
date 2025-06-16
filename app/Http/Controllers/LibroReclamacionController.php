@@ -361,5 +361,46 @@ class LibroReclamacionController extends Controller
         return back()->with('successdrift', '✅ Informe del responsable subido correctamente.');
     }
 
+    public function dashboard(Request $request)
+    {
+        // 📌 Filtro base de reclamos
+        $reclamos = LibroReclamacion::query()
+            ->when($request->search, fn($q) => $q->where('nombre_apellido', 'like', "%{$request->search}%"))
+            ->when($request->estado !== null && $request->estado !== '', fn($q) => $q->where('estado', $request->estado))
+            ->orderByDesc('fecha_evento')
+            ->paginate(10);
+
+        // 📊 Conteos para tarjetas resumen
+        $totalReclamos = LibroReclamacion::count();
+        $registrados = LibroReclamacion::where('estado', 0)->count();
+        $derivados   = LibroReclamacion::where('estado', 1)->count();
+        $atendidos   = LibroReclamacion::where('estado', 2)->count();
+
+        // 🧾 Tipos de reclamo
+        $totalReclamosQueja   = LibroReclamacion::where('tipo_reclamo_queja', 'queja')->count();
+        $totalReclamosReclamo = LibroReclamacion::where('tipo_reclamo_queja', 'reclamo')->count();
+
+        // 📅 Reclamos por mes
+        $reclamosPorMes = LibroReclamacion::selectRaw("DATE_FORMAT(fecha_evento, '%Y-%m') as mes, COUNT(*) as total")
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get();
+
+        $reclamosPorMesMeses   = $reclamosPorMes->pluck('mes');
+        $reclamosPorMesValores = $reclamosPorMes->pluck('total');
+
+        return view('dashboard.dashboard', compact(
+            'reclamos',
+            'totalReclamos',
+            'registrados',
+            'derivados',
+            'atendidos',
+            'totalReclamosQueja',
+            'totalReclamosReclamo',
+            'reclamosPorMesMeses',
+            'reclamosPorMesValores'
+        ));
+    }
+
 }
 

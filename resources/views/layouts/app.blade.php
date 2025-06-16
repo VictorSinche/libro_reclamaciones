@@ -15,7 +15,8 @@
 <!-- CDN Tom Select -->
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
-
+<!-- En tu layout Blade (layouts/app.blade.php) -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <!-- Loader Global con Imagen -->
 <div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
