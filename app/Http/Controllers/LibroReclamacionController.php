@@ -9,6 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Derivacion;
 use App\Models\UserAdmin;
 use App\Mail\NotificarDerivacion;
+use App\Mail\ConfirmarRecepcionReclamo;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\PdfHelper;
@@ -46,7 +47,17 @@ class LibroReclamacionController extends Controller
             'pedido' => 'required|string',
         ]);
 
-        LibroReclamacion::create($data);
+        Log::debug('📌 Registrando reclamo…');
+        $reclamo = LibroReclamacion::create($data);
+        Log::debug('📤 Enviando confirmación a: ' . $reclamo->correo);
+        try {
+            Mail::to($reclamo->correo)
+                ->send(new ConfirmarRecepcionReclamo($reclamo));
+            Log::debug('✅ Correo de confirmación enviado');
+        } catch (\Throwable $e) {
+            Log::error('❌ Error enviando correo: ' . $e->getMessage());
+            // Si quieres, podrías agregar aquí un Mail::failures() o una cola de reintento
+        }
 
         return redirect()->route('libroreclamaciones.registro')->with('success', 'Formulario enviado correctamente');
     }
@@ -78,7 +89,7 @@ class LibroReclamacionController extends Controller
 
         $pdf = Pdf::loadView('libro_reclamaciones.modelolibre.hoja', compact('reclamo'))->setPaper('A4', 'portrait');
 
-        return $pdf->download("hoja-reclamacion-UMA-{$reclamo->id}.pdf");
+        return $pdf->stream("hoja-reclamacion-UMA-{$reclamo->id}.pdf");
     }
 
     public function guardarDerivacion(Request $request)
@@ -292,13 +303,8 @@ class LibroReclamacionController extends Controller
         $derivacion = Derivacion::findOrFail($id);
         $derivacion->estado = 2; // Marcar como completado
         $derivacion->save();
-
-        // Obtener el correo desde la configuración
         $correoResponsable = env('MAIL_FROM_ADDRESS'); // Obtener desde el .env
-
-        // Enviar el correo a MAIL_FROM_ADDRESS
         Mail::to($correoResponsable)->send(new InformeCompletado($derivacion));
-
         return back()->with('success', '✅ Derivación marcada como atendida.');
     }
 
@@ -329,7 +335,7 @@ class LibroReclamacionController extends Controller
                 ->setPaper('A4', 'portrait');
 
         // ✅ Descarga del PDF con nombre dinámico
-        return $pdf->download("informe-derivacion-UMA-{$derivacion->id}.pdf");
+        return $pdf->stream("informe-derivacion-UMA-{$derivacion->id}.pdf");
     }
 
     public function subirInforme(Request $request, $id)

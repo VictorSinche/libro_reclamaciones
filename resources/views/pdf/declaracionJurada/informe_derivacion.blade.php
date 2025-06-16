@@ -9,28 +9,54 @@
             font-size: 13px;
             color: #333;
             line-height: 1.5;
+            margin: 30px 40px;
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .logo {
+            width: 100px;
+        }
+
+        .titulo-container {
+            text-align: right;
+            flex-grow: 1;
         }
 
         .titulo {
             font-size: 18px;
             font-weight: bold;
+            margin: 0;
+        }
+
+        .fecha {
+            font-size: 12px;
+            color: #555;
         }
 
         .section {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .label {
             font-weight: bold;
+            font-size: 14px;
+            color: #222;
+            margin-bottom: 3px;
         }
 
         .contenido {
-            margin-top: 5px;
+            padding: 6px 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
         .editor-content * {
@@ -40,7 +66,7 @@
         .editor-content h1,
         .editor-content h2,
         .editor-content h3 {
-            margin-top: 10px;
+            margin-top: 12px;
         }
 
         .editor-content ul {
@@ -65,28 +91,30 @@
 <body>
 
     <div class="header">
-        <div class="titulo">Informe del Área Derivada</div>
-        {{-- <p>ID de Derivación: {{ $derivacion->id }}</p> --}}
-        <p>Fecha: {{ \Carbon\Carbon::parse($derivacion->fecha_derivacion)->format('d/m/Y') }}</p>
+        <img src="{{ public_path('/uma/img/logo.png') }}" alt="Logo UMA" class="logo">
+        <div class="titulo-container">
+            <p class="titulo">Informe del Área Derivada</p>
+            <p class="fecha">Fecha: {{ \Carbon\Carbon::parse($derivacion->fecha_derivacion)->format('d/m/Y') }}</p>
+        </div>
     </div>
 
     <div class="section">
-        <div class="label">Área Responsable:</div>
-        <div class="contenido">{{ $derivacion->area->nombre ?? '---' }}</div>
-    </div>
-
-    <div class="section">
-        <div class="label">Reclamante:</div>
+        <div class="label">Nombre del Reclamante:</div>
         <div class="contenido">{{ $derivacion->libroReclamacion->nombre_apellido }}</div>
     </div>
 
     <div class="section">
-        <div class="label">Motivo:</div>
+        <div class="label">Área Responsable Derivada:</div>
+        <div class="contenido">{{ $derivacion->area->nombre ?? '---' }}</div>
+    </div>
+
+    <div class="section">
+        <div class="label">Motivo del Reclamo:</div>
         <div class="contenido">{{ $derivacion->libroReclamacion->motivo_reclamo }}</div>
     </div>
 
     <div class="section">
-        <div class="label">Informe redactado:</div>
+        <div class="label">Informe Redactado:</div>
         <div class="contenido editor-content">
             {!! $derivacion->informe !!}
         </div>

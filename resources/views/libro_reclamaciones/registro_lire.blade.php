@@ -60,7 +60,7 @@
 
                 <!-- Botones -->
                 <div class="mt-8">
-                    <p class="text-sm text-gray-700 mb-4">Puede imprimir una copia de su respuesta después de enviarla</p>
+                    <p class="text-sm text-gray-700 mb-4">Una copia de su respuesta será remitida automáticamente a su dirección de correo electrónico registrada.</p>
                     <div class="flex items-center space-x-4">
                         <button type="button" id="btn-atras"
                             class="px-6 py-2 rounded-md border border-gray-300 bg-white text-gray-800 hover:bg-gray-100 transition duration-200 hidden">
