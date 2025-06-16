@@ -27,10 +27,6 @@ COPY . .
 
 # Instalar dependencias PHP y JS
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
-    && npm install && npm run build
-
-# Instalar dependencias PHP y JS
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
     && npm install && npm run build \
     && php artisan config:clear \
     && php artisan route:clear \
