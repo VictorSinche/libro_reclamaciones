@@ -324,9 +324,9 @@
                 @endif --}}
                 @if(tienePermisoGlobal('ADM.3'))
                   <li>
-                    <a href="{{ route('admision.derivaciones') }}" 
+                    <a href="{{ route('admi.derivaciones') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                      {{ Request::routeIs('admision.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      {{ Request::routeIs('admi.derivaciones') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                       Hojas reclamaciones derivadas
                     </a>            
                   </li>
