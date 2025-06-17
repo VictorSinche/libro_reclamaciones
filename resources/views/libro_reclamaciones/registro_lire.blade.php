@@ -22,6 +22,42 @@
         });
     </script>
   @endif
+
+<!-- Loader Global con Imagen -->
+<div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
+  <!-- Imagen arriba -->
+  <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
+  
+  <!-- Loader animado -->
+  <div class="loader"></div>
+  
+  <!-- Texto -->
+  <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
+</div>
+
+<style>
+.loader {
+  width: 120px;
+  height: 22px;
+  border-radius: 20px;
+  color: #e72352;
+  border: 2px solid;
+  position: relative;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  margin: 2px;
+  inset: 0 100% 0 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l6 2s infinite;
+}
+@keyframes l6 {
+  100% { inset: 0 }
+}
+</style>
+
   <div class="relative flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat" style="background-image:url('uma/img/of_uma.jpeg')">
     <!-- Capa oscura -->
     <div class="absolute inset-0 bg-red-900/30 backdrop-blur-sm"></div>
@@ -229,6 +265,8 @@
             });
             return;
         }
+        //mostrar loader
+        document.getElementById('loader-wrapper').classList.remove('hidden');
 
         // Si todo OK, enviamos el formulario
         document.getElementById('formulario-reclamo').submit();

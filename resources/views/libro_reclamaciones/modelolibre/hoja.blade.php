@@ -16,28 +16,51 @@
             text-align: left;
             background-color: #f3f3f3;
         }
+        .tabla-header {
+            text-align: center;
+            padding: 12px;
+        }
+        .tabla-header img {
+            height: 70px;
+        }
     </style>
 
     <table>
+        <!-- Encabezado institucional completo -->
+        <tr>
+            <td colspan="4" class="tabla-header">
+                <table style="width: 100%; border: none;">
+                    <tr style="border: none;">
+                        <td style="width: 20%; border: none; text-align: left;">
+                            <img src="{{ public_path('/uma/img/logo-uma.png') }}" alt="Logo UMA">
+                        </td>
+                        <td style="width: 60%; border: none; text-align: center;">
+                            <strong style="font-size: 20px;">UNIVERSIDAD MARÍA AUXILIADORA</strong><br>
+                            <span style="font-size: 18px;">Av. Canto Bello 431, San Juan de Lurigancho</span>
+                        </td>
+                        <td style="width: 20%; border: none; text-align: right;">
+                            <img src="{{ public_path('/uma/img/reclamaciones.png') }}" alt="Libro de Reclamaciones">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Título de la hoja -->
         <tr>
             <th colspan="2">LIBRO DE RECLAMACIONES</th>
-            <th colspan="2">HOJA DE RECLAMACIÓN Nº {{ $reclamo->id }}</th>
+            <th colspan="2">HOJA DE RECLAMACIÓN Nº</th>
         </tr>
         <tr>
-            <td colspan="1"><strong>FECHA:</strong></td>
-            <td colspan="3">
+            <td><strong>FECHA:</strong></td>
+            <td>
                 {{ \Carbon\Carbon::parse($reclamo->fecha_evento)->format('d') }} /
                 {{ \Carbon\Carbon::parse($reclamo->fecha_evento)->format('m') }} /
                 {{ \Carbon\Carbon::parse($reclamo->fecha_evento)->format('Y') }}
             </td>
+            <td><strong>Nro:</strong></td>
+            <td>{{ $reclamo->id }}</td>
         </tr>
-        <tr>
-            <td colspan="4">
-                <strong>UNIVERSIDAD MARÍA AUXILIADORA</strong><br>
-                Av. Canto Bello 431, San Juan de Lurigancho
-            </td>
-        </tr>
-
         <tr><th colspan="4">1. IDENTIFICACIÓN DEL CONSUMIDOR</th></tr>
         <tr>
             <td><strong>Nombre:</strong></td>
