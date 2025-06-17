@@ -16,20 +16,10 @@ class ItemSeeder extends Seeder
             // Permisos
             ['module_codigo' => 'PER', 'nombre' => 'Lista de Usuarios', 'codigo' => 'PER.1'],
             ['module_codigo' => 'PER', 'nombre' => 'Permisos de Usuario', 'codigo' => 'PER.2'],
-            // Postulante
-            ['module_codigo' => 'POS', 'nombre' => 'Informacion Personal', 'codigo' => 'POS.1'],
-            ['module_codigo' => 'POS', 'nombre' => 'Pagos Incripcion', 'codigo' => 'POS.2'],
-            ['module_codigo' => 'POS', 'nombre' => 'Adjuntar Documentos', 'codigo' => 'POS.3'],
-            ['module_codigo' => 'POS', 'nombre' => 'Ver Horario', 'codigo' => 'POS.4'],
-
-            // Admisión
-            ['module_codigo' => 'ADM', 'nombre' => 'Lista de postulantes', 'codigo' => 'ADM.1'],
-            ['module_codigo' => 'ADM', 'nombre' => 'Historial declaración jurada', 'codigo' => 'ADM.2'],            
-            ['module_codigo' => 'ADM', 'nombre' => 'Reclamaciones derivadas', 'codigo' => 'ADM.3'],
-            ['module_codigo' => 'ADM', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'ADM.4'],
+            ['module_codigo' => 'PER', 'nombre' => 'Permisos de Usuario', 'codigo' => 'PER.3'],
             
-            // Director
-            ['module_codigo' => 'DIR', 'nombre' => 'Convalidación', 'codigo' => 'DIR.1'],
+            // Admisión
+            ['module_codigo' => 'ADM', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'ADM.1'],
 
             // COA
             ['module_codigo' => 'COA', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'COA.1'],
@@ -47,7 +37,16 @@ class ItemSeeder extends Seeder
             ['module_codigo' => 'TI', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TI.1'],
 
             // Direccion de escuela
-            ['module_codigo' => 'DE', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'DE.1'],
+            ['module_codigo' => 'AN', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'AN.1'],
+            ['module_codigo' => 'AM', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'AM.1'],
+            ['module_codigo' => 'CF', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'CF.1'],
+            ['module_codigo' => 'IA', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'IA.1'],
+            ['module_codigo' => 'FAR', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'FAR.1'],
+            ['module_codigo' => 'ENF', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'ENF.1'],
+            ['module_codigo' => 'PSI', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'PSI.1'],
+            ['module_codigo' => 'NUT', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'NUT.1'],
+            ['module_codigo' => 'TFR', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TFR.1'],
+            ['module_codigo' => 'TLP', 'nombre' => 'Hojas reclamaciones derivadas', 'codigo' => 'TLP.1']
         ];
 
         foreach ($items as $item) {

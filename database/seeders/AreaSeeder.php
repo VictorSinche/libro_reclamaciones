@@ -9,7 +9,23 @@ class AreaSeeder extends Seeder
 {
     public function run(): void
     {
-        $areas = ['COA', 'OSAR', 'TI', 'TESORERIA', 'ADMISION', 'DIRECCIÓN DE ESCUELA'];
+        $areas = [
+            'OSAR',
+            'TESORERIA',
+            'TI',
+            'ADMISION',
+            'COA',
+            'Adm. y Negocios',
+            // 'Adm. y Marketing',
+            'Contab. y Finanzas',
+            'Ing. IA',
+            'Farmacia',
+            'Enfermería',
+            'Psicología',
+            'Nutrición',
+            // 'TM Fis. y Rehab.',
+            'TM Lab. y Anat. Pat.'
+        ];
 
         foreach ($areas as $nombre) {
             DB::table('areas')->updateOrInsert(

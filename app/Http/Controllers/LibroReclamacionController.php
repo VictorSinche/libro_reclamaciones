@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\PdfHelper;
 use App\Mail\InformeCompletado;
+use Illuminate\Support\Facades\DB;
+
 class LibroReclamacionController extends Controller
 {
 
@@ -166,138 +168,6 @@ class LibroReclamacionController extends Controller
             return view('libro_reclamaciones.derivaciones.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
     }
 
-    public function verPorAreaCoa()
-    {
-        
-        $areaId = session('area_id');
-        if (!$areaId) {
-            return back()->with('error', 'Área no asignada al usuario.');
-        }
-
-        $derivaciones = Derivacion::with('libroReclamacion')
-            ->where('area_id', $areaId)
-            ->orderByDesc('created_at')
-            ->get();
-        
-        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
-            ->paginate(10);
-
-        $areas = Area::all();
-
-            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
-    }
-
-    public function verPorAreaTi()
-    {
-        
-        $areaId = session('area_id');
-        if (!$areaId) {
-            return back()->with('error', 'Área no asignada al usuario.');
-        }
-
-        $derivaciones = Derivacion::with('libroReclamacion')
-            ->where('area_id', $areaId)
-            ->orderByDesc('created_at')
-            ->get();
-        
-        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
-            ->paginate(10);
-
-        $areas = Area::all();
-
-            return view('ti.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
-    }
-
-    public function verPorAreaOsar()
-    {
-        
-        $areaId = session('area_id');
-        if (!$areaId) {
-            return back()->with('error', 'Área no asignada al usuario.');
-        }
-
-        $derivaciones = Derivacion::with('libroReclamacion')
-            ->where('area_id', $areaId)
-            ->orderByDesc('created_at')
-            ->get();
-        
-        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
-            ->paginate(10);
-
-        $areas = Area::all();
-
-            return view('osar.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
-    }
-
-    public function verPorAreaTesoreria()
-    {
-        
-        $areaId = session('area_id');
-        if (!$areaId) {
-            return back()->with('error', 'Área no asignada al usuario.');
-        }
-
-        $derivaciones = Derivacion::with('libroReclamacion')
-            ->where('area_id', $areaId)
-            ->orderByDesc('created_at')
-            ->get();
-        
-        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
-            ->paginate(10);
-
-        $areas = Area::all();
-
-            return view('tesoreria.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
-    }
-
-    public function verPorAreaAdmi()
-    {
-        
-        $areaId = session('area_id');
-        if (!$areaId) {
-            return back()->with('error', 'Área no asignada al usuario.');
-        }
-
-        $derivaciones = Derivacion::with('libroReclamacion')
-            ->where('area_id', $areaId)
-            ->orderByDesc('created_at')
-            ->get();
-        
-        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
-            ->paginate(10);
-
-        $areas = Area::all();
-
-            return view('admision.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
-    }
-
-    public function verPorAreaEscuela()
-    {
-        
-        $areaId = session('area_id');
-        if (!$areaId) {
-            return back()->with('error', 'Área no asignada al usuario.');
-        }
-
-        $derivaciones = Derivacion::with('libroReclamacion')
-            ->where('area_id', $areaId)
-            ->orderByDesc('created_at')
-            ->get();
-        
-        $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
-            ->paginate(10);
-
-        $areas = Area::all();
-
-            return view('coa.mis_derivaciones', compact('derivaciones', 'reclamos', 'areas'));
-    }
-
     public function marcarComoAtendido($id)
     {
         $derivacion = Derivacion::findOrFail($id);
@@ -361,20 +231,13 @@ class LibroReclamacionController extends Controller
         return back()->with('successdrift', '✅ Informe del responsable subido correctamente.');
     }
 
-    public function dashboard(Request $request)
+    public function dashboard()
     {
-        // 📌 Filtro base de reclamos
-        $reclamos = LibroReclamacion::query()
-            ->when($request->search, fn($q) => $q->where('nombre_apellido', 'like', "%{$request->search}%"))
-            ->when($request->estado !== null && $request->estado !== '', fn($q) => $q->where('estado', $request->estado))
-            ->orderByDesc('fecha_evento')
-            ->paginate(10);
-
         // 📊 Conteos para tarjetas resumen
         $totalReclamos = LibroReclamacion::count();
-        $registrados = LibroReclamacion::where('estado', 0)->count();
-        $derivados   = LibroReclamacion::where('estado', 1)->count();
-        $atendidos   = LibroReclamacion::where('estado', 2)->count();
+        $registrados   = LibroReclamacion::where('estado', 0)->count();
+        $derivados     = LibroReclamacion::where('estado', 1)->count();
+        $atendidos     = LibroReclamacion::where('estado', 2)->count();
 
         // 🧾 Tipos de reclamo
         $totalReclamosQueja   = LibroReclamacion::where('tipo_reclamo_queja', 'queja')->count();
@@ -389,8 +252,29 @@ class LibroReclamacionController extends Controller
         $reclamosPorMesMeses   = $reclamosPorMes->pluck('mes');
         $reclamosPorMesValores = $reclamosPorMes->pluck('total');
 
+        // 🏢 Reclamos por Área
+        $reclamosPorArea = Derivacion::select('areas.nombre', DB::raw('COUNT(*) as total'))
+            ->join('areas', 'areas.id', '=', 'derivaciones.area_id')
+            ->groupBy('areas.nombre')
+            ->get();
+
+        $areasLabels  = $reclamosPorArea->pluck('nombre');
+        $areasValores = $reclamosPorArea->pluck('total');
+
+        $coloresPorArea = [
+            'COA' => '#f97316',
+            'OSAR' => '#3b82f6',
+            'TI' => '#22c55e',
+            'TESORERIA' => '#6366f1',
+            'ADMISION' => '#ec4899',
+            'DIRECCIÓN DE ESCUELA' => '#eab308',
+        ];
+
+        $colores = $areasLabels->map(fn($nombre) => $coloresPorArea[$nombre] ?? '#9ca3af'); // gris por defecto
+        $conInforme = Derivacion::whereNotNull('informe')->count();
+        $sinInforme = Derivacion::whereNull('informe')->count();
+
         return view('dashboard.dashboard', compact(
-            'reclamos',
             'totalReclamos',
             'registrados',
             'derivados',
@@ -398,7 +282,12 @@ class LibroReclamacionController extends Controller
             'totalReclamosQueja',
             'totalReclamosReclamo',
             'reclamosPorMesMeses',
-            'reclamosPorMesValores'
+            'reclamosPorMesValores',
+            'areasLabels',
+            'areasValores',
+            'colores',
+            'conInforme',
+            'sinInforme'
         ));
     }
 

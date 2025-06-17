@@ -36,7 +36,7 @@
             </div>
         </div>
         </div>
-        <div class="p-0 overflow-scroll">
+        <div class="overflow-y-auto max-h-[70vh] mt-4">
             <table class="w-full mt-4 text-left table-auto min-w-max">
                 <thead>
                     <tr>

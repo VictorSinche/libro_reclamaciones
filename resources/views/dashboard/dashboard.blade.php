@@ -13,7 +13,7 @@
                 <!-- Heroicon: Clipboard List -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h2l1-1h4l1 1h2a2 2 0 012 2v11a2 2 0 01-2 2z"/>
+                            d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h2l1-1h4l1 1h2a2 2 0 012 2v11a2 2 0 01-2 2z"/>
                 </svg>
             </div>
             <div>
@@ -28,7 +28,7 @@
                 <!-- Heroicon: Paper Airplane -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
             </div>
             <div>
@@ -43,7 +43,7 @@
                 <!-- Heroicon: Check Circle -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 12l2 2l4-4m5 2a9 9 0 11-18 0a9 9 0 0118 0z"/>
+                            d="M9 12l2 2l4-4m5 2a9 9 0 11-18 0a9 9 0 0118 0z"/>
                 </svg>
             </div>
             <div>
@@ -56,23 +56,28 @@
   <!-- Gráficos estadísticos -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
 
-      <!-- Reclamos por Estado -->
-      <div class="bg-white shadow-md rounded-lg p-6">
-          <h2 class="text-lg font-semibold mb-4 text-indigo-600">📊 Reclamos por Estado</h2>
-          <div id="chartEstado"></div>
-      </div>
-
       <!-- Tipo de Reclamo -->
       <div class="bg-white shadow-md rounded-lg p-6">
           <h2 class="text-lg font-semibold mb-4 text-blue-600">🧾 Tipos de Reclamo</h2>
           <div id="chartTipo"></div>
       </div>
-      
-  </div>
+    
+    {{-- Cumplimiento de Informe Responsable --}}
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4 text-yellow-600">📄 Informe Responsable</h2>
+        <div id="chartInforme"></div>
+    </div>
+    
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4 text-green-600">📈 Evolución Mensual</h2>
+        <div id="chartMeses" class="w-full"></div>
+    </div>
 
-  <div class="bg-white shadow-md rounded-lg p-6 w-full">
-    <h2 class="text-lg font-semibold mb-4 text-green-600">📈 Evolución Mensual</h2>
-    <div id="chartMeses" class="w-full"></div>
+    <!-- Reclamos por Estado -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4 text-purple-600">🏢 Reclamos por Área</h2>
+        <div id="chartArea"></div>
+    </div>
   </div>
 
 </div>
@@ -80,21 +85,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // 📊 Reclamos por Estado
-        const chartEstado = new ApexCharts(document.querySelector("#chartEstado"), {
-            chart: { type: 'bar', height: 250 },
-            series: [{
-                name: 'Cantidad',
-                data: [{{ $registrados }}, {{ $derivados }}, {{ $atendidos }}]
-            }],
-            xaxis: {
-                categories: ['Registrados', 'Derivados', 'Atendidos'],
-                labels: { style: { fontSize: '14px' } }
-            },
-            colors: ['#facc15', '#3b82f6', '#10b981']
-        });
-        chartEstado.render();
-
         // 🧾 Tipos de Reclamo
         const chartTipo = new ApexCharts(document.querySelector("#chartTipo"), {
             chart: { type: 'donut', height: 250 },
@@ -119,5 +109,48 @@
             colors: ['#0ea5e9']
         });
         chartMeses.render();
+
+        const chartInforme = new ApexCharts(document.querySelector("#chartInforme"), {
+            chart: { type: 'donut', height: 250 },
+            series: [{{ $conInforme }}, {{ $sinInforme }}],
+            labels: ['Con Informe', 'Sin Informe'],
+            colors: ['#22c55e', '#ef4444'], // verde y rojo
+            tooltip: {
+                y: {
+                    formatter: val => `${val} reclamos`
+                }
+            }
+        });
+        chartInforme.render();
+
     });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // 🏢 Reclamos por Área (colores distintos por barra)
+    const chartArea = new ApexCharts(document.querySelector("#chartArea"), {
+        chart: { type: 'bar', height: 250 },
+        series: [{
+            name: 'Reclamos',
+            data: {!! json_encode($areasValores) !!}
+        }],
+        xaxis: {
+            categories: {!! json_encode($areasLabels) !!},
+            labels: { style: { fontSize: '13px' } }
+        },
+        plotOptions: {
+            bar: {
+                distributed: true     // ← ¡clave para colores por barra!
+            }
+        },
+        colors: {!! json_encode($colores->values()) !!} // garantiza array plano
+    });
+
+    chartArea.render();
+
+    /* …resto de tus gráficos (chartTipo, chartMeses)… */
+});
+</script>
+
