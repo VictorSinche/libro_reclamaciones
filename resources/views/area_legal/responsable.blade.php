@@ -50,31 +50,23 @@
                         <h3 class="text-2xl font-semibold text-slate-800">Hojas de Reclamaciones</h3>
                         <p class="text-slate-500">Observa bien las hojas de reclamaciones y deriva según corresponda al área asignada.</p>
                     </div>
-
-                    <!-- Contenedor derecho: buscador + formulario -->
-                    <div class="flex flex-col sm:flex-row items-center gap-3">
                         <!-- Buscador -->
-                        <div class="w-full md:w-72">
-                            <form method="GET" action="{{ route('arealegal.libroRe') }}" class="w-full md:w-72">
-                                <div class="relative h-10 w-full min-w-[200px]">
-                                    <input
-                                        type="text"
-                                        name="search"
-                                        value="{{ request('search') }}"
-                                        class="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline-0"
-                                        placeholder="Buscar por nombre, DNI o correo" />
-
-                                    <button type="submit" class="absolute top-1/2 right-3 -translate-y-1/2 text-blue-gray-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor" stroke-width="1.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </form>
+                        <div class="relative w-full max-w-xs mb-4">
+                            <input
+                                type="text"
+                                id="buscador"
+                                name="buscador"
+                                placeholder=" "
+                                class="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 text-sm text-blue-gray-700 outline-0 transition-all focus:border-2 focus:border-gray-900 placeholder-shown:border-blue-gray-200"
+                                oninput="filtrarTabla()"
+                            />
+                            <label
+                                for="buscador"
+                                class="pointer-events-none absolute left-0 -top-1.5 text-[11px] text-gray-500 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:left-3 peer-focus:text-[11px] peer-focus:top-0 peer-focus:left-0 peer-focus:text-gray-900"
+                            >
+                                Buscar reclamo...
+                            </label>
                         </div>
-                    </div>
                 </div>
             </div>
             <div class="overflow-y-auto max-h-[70vh] mt-4">
@@ -478,6 +470,17 @@
         function toggleAreas(id) {
             const fila = document.getElementById('detalle-' + id);
             fila.classList.toggle('hidden');
+        }
+    </script>
+    <script>
+        function  filtrarTabla() {
+            const filtro = document.getElementById("buscador").value.toLowerCase();
+            const filas = document.querySelectorAll("tbody tr");
+
+            filas.forEach(fila => {
+                const textoFila = fila.textContent.toLowerCase();
+                fila.style.display = textoFila.includes(filtro) ? "" : "none";
+            });
         }
     </script>
 @endsection
