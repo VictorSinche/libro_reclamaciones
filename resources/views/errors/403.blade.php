@@ -12,7 +12,7 @@
     <div id="ghost" class="relative flex flex-col items-center transition-transform duration-700">
         <!-- Cuerpo del fantasma -->
         <div class="w-36 h-40 bg-white rounded-t-full flex items-end justify-center">
-        <span class="text-slate-800 font-extrabold text-sm pb-6">WaSAAAAAAAAAAAAAAAAAAAAAAA</span>
+        <span class="text-purple-800 font-extrabold text-5xl pb-6">WaSAAAAAAAAAAAAAAAAAAAAAAA</span>
         </div>
         <!-- Picos inferiores del fantasma -->
         <div class="flex">

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\PdfHelper;
 use App\Mail\InformeCompletado;
+use App\Mail\NotificarResponsableLibroReclamacion;
 use Illuminate\Support\Facades\DB;
 
 class LibroReclamacionController extends Controller
@@ -49,20 +50,30 @@ class LibroReclamacionController extends Controller
             'pedido' => 'required|string',
         ]);
 
-        Log::debug('📌 Registrando reclamo…');
+        Log::debug('📌 Registrando nuevo reclamo...');
         $reclamo = LibroReclamacion::create($data);
-        Log::debug('📤 Enviando confirmación a: ' . $reclamo->correo);
+
+        $correoReclamante = $reclamo->correo;
+        $correoResponsable = env('MAIL_FROM_ADDRESS');
+
         try {
-            Mail::to($reclamo->correo)
+            // Enviar al reclamante
+            Mail::to($correoReclamante)
                 ->send(new ConfirmarRecepcionReclamo($reclamo));
-            Log::debug('✅ Correo de confirmación enviado');
+            Log::debug("✅ Correo enviado al reclamante: $correoReclamante");
+
+            // Enviar al responsable
+            Mail::to($correoResponsable)
+                ->send(new NotificarResponsableLibroReclamacion($reclamo));
+            Log::debug("✅ Correo enviado al responsable: $correoResponsable");
+
         } catch (\Throwable $e) {
-            Log::error('❌ Error enviando correo: ' . $e->getMessage());
-            // Si quieres, podrías agregar aquí un Mail::failures() o una cola de reintento
+            Log::error('❌ Error al enviar correos: ' . $e->getMessage());
         }
 
-        return redirect()->route('libroreclamaciones.registro')->with('success', 'Formulario enviado correctamente');
+        return redirect()->back()->with('success', '✅ Reclamo registrado correctamente y correos enviados.');
     }
+
     
     public function listarLibroRe(Request $request)
     {
