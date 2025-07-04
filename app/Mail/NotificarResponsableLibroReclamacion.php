@@ -23,6 +23,8 @@ class NotificarResponsableLibroReclamacion extends Mailable
     public function build()
     {
         return $this->subject('📥 Nuevo reclamo ingresado - Libro de Reclamaciones')
-                    ->markdown('emails.responsable.reclamo');
+                    ->view('emails.responsable.reclamo')
+                    ->with(['reclamo' => $this->reclamo]);
     }
+
 }
