@@ -16,6 +16,15 @@ else
     echo "✅ Enlace simbólico 'public/storage' ya existe."
 fi
 
+echo "⌛ Esperando que MySQL esté disponible..."
+until nc -z -v -w30 db 3306
+do
+  echo "⏳ Esperando MySQL..."
+  sleep 5
+done
+echo "✅ MySQL disponible. Continuando..."
+
+
 # Ejecutar migraciones (si no se hicieron en build)
 echo "🛠️  Ejecutando migraciones y seeders..."
 php artisan migrate --force || echo "⚠️  Migraciones fallaron (BD no disponible o ya migrada)"
