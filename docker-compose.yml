@@ -18,7 +18,7 @@ services:
     container_name: laravel_db
     restart: always
     environment:
-      MYSQL_DATABASE: laravel
+      MYSQL_DATABASE: lib_reclamaciones
       MYSQL_USER: laraveluser
       MYSQL_PASSWORD: laravelpass
       MYSQL_ROOT_PASSWORD: rootpass
