@@ -184,7 +184,7 @@ class LibroReclamacionController extends Controller
         $derivacion = Derivacion::findOrFail($id);
         $derivacion->estado = 2; // Marcar como completado
         $derivacion->save();
-        $correoResponsable = env('MAIL_FROM_ADDRESS'); // Obtener desde el .env
+        $correoResponsable = config('mail.from.address') ?? 'notificaciones@uma.edu.pe';
         Mail::to($correoResponsable)->send(new InformeCompletado($derivacion));
         return back()->with('success', '✅ Derivación marcada como atendida.');
     }
