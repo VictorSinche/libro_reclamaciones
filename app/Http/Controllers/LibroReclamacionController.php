@@ -54,7 +54,7 @@ class LibroReclamacionController extends Controller
         $reclamo = LibroReclamacion::create($data);
 
         $correoReclamante = $reclamo->correo;
-        $correoResponsable = env('MAIL_FROM_ADDRESS');
+        $correoResponsable = config('mail.from.address') ?? 'notificaciones@uma.edu.pe';
 
         try {
             // Enviar al reclamante

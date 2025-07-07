@@ -41,7 +41,7 @@ class NotificarDerivacionesPendientes extends Command
 
         foreach ($derivaciones as $derivacion) {
             $usuario = UserAdmin::where('area_id', $derivacion->area_id)->first();
-            $responsable = env('MAIL_FROM_ADDRESS');
+            $responsable = config('mail.from.address') ?? 'notificaciones@uma.edu.pe';
 
             if ($usuario && filter_var($usuario->email, FILTER_VALIDATE_EMAIL)) {
                 Mail::to($usuario->email)->send(new NotificacionReclamoPendiente($derivacion));
