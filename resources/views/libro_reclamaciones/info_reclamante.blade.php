@@ -98,7 +98,7 @@
 <!-- Campo: Teléfono fijo -->
 <div>
     <label for="telefono" class="block text-md font-normal text-gray-800 mb-1">
-        8. Teléfono fijo <span class="text-red-700">*</span>
+        8. Teléfono fijo</span>
     </label>
 
     <input

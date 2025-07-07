@@ -175,7 +175,7 @@
 
         campos.forEach(campo => {
             const name = campo.name;
-            if (name === 'apoderado') return;
+            if (name === 'apoderado' || name === 'telefono') return;
             if (validados.has(name)) return; // ya lo revisamos
 
             validados.add(name);
