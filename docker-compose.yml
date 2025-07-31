@@ -1,31 +1,52 @@
 version: '3.8'
 
 services:
-  app:
+  libro_app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel_app
+    container_name: libro_reclamaciones_app
     ports:
       - "7001:80"
     volumes:
       - .:/var/www/html
     depends_on:
-      - db
+      - libro_db
+    command: ["/entrypoint.sh"]
+    networks:
+      - nginx-proxy-manager_default
 
-  db:
+  libro_db:
     image: mysql:8.0
-    container_name: laravel_db
+    container_name: libro_reclamaciones_db
     restart: always
     environment:
-      MYSQL_DATABASE: lib_reclamaciones
-      MYSQL_USER: laraveluser
-      MYSQL_PASSWORD: laravelpass
-      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "3306:3306"
+      - "3309:3306"  # Asegura que no choque con otros contenedores
     volumes:
-      - dbdata:/var/lib/mysql
+      - libro_db_data:/var/lib/mysql
+    networks:
+      - nginx-proxy-manager_default
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: libro_reclamaciones_phpmyadmin
+    restart: always
+    ports:
+      - "8083:80"
+    environment:
+      PMA_HOST: libro_reclamaciones_db
+      PMA_PORT: 3306
+    networks:
+      - nginx-proxy-manager_default
 
 volumes:
-  dbdata:
+  libro_db_data:
+
+networks:
+  nginx-proxy-manager_default:
+    external: true
