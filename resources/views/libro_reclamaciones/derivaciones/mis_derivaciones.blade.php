@@ -244,6 +244,31 @@
     </div>
 </div>
 
+<!-- Modal de informe avanzado -->
+    <div id="modalInforme" class="fixed inset-0 bg-black/40 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white w-full max-w-5xl max-h-[90vh] overflow-auto p-6 rounded-lg shadow-xl relative animate__animated animate__fadeIn">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-700 flex justify-between items-center">
+                Redactar Informe del Área
+                <button onclick="cerrarModalInforme()" class="text-red-500 hover:text-red-700 text-xl">&times;</button>
+            </h2>
+            <form method="POST" action="{{ route('derivacion.guardar_informe') }}">
+                @csrf
+                <input type="hidden" name="id" id="derivacionId">
+
+                <textarea name="informe" id="editor" class="w-full h-[500px] border border-gray-300"></textarea>
+
+                <div class="flex justify-end mt-6 gap-2">
+                    <button type="button" onclick="cerrarModalInforme()" class="px-5 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        Guardar informe
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
 @if(session('success'))
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -266,31 +291,6 @@
         fila.classList.toggle('hidden');
     }
 </script>
-
-<!-- Modal de informe avanzado -->
-<div id="modalInforme" class="fixed inset-0 bg-black/40 bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white w-full max-w-5xl max-h-[90vh] overflow-auto p-6 rounded-lg shadow-xl relative animate__animated animate__fadeIn">
-        <h2 class="text-2xl font-bold mb-4 text-indigo-700 flex justify-between items-center">
-            Redactar Informe del Área
-            <button onclick="cerrarModalInforme()" class="text-red-500 hover:text-red-700 text-xl">&times;</button>
-        </h2>
-        <form method="POST" action="{{ route('derivacion.guardar_informe') }}">
-            @csrf
-            <input type="hidden" name="id" id="derivacionId">
-
-            <textarea name="informe" id="editor" class="w-full h-[500px] border border-gray-300"></textarea>
-
-            <div class="flex justify-end mt-6 gap-2">
-                <button type="button" onclick="cerrarModalInforme()" class="px-5 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition">
-                    Cancelar
-                </button>
-                <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                    Guardar informe
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <!-- CKEditor desde CDN -->
 {{-- <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script> --}}

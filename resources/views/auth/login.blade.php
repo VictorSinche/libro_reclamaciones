@@ -6,7 +6,7 @@
   <div class="relative z-10 rounded-xl bg-black bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
     <div class="text-white">
       <div class="mb-8 flex flex-col items-center">
-        <h1 class="mb-2 text-2xl font-bold">Admisión</h1>
+        <h1 class="mb-2 text-2xl font-bold">Libro de Reclamaciones</h1>
         <span class="text-gray-300 font">Introducir datos de acceso</span>
       </div>
       <form method="POST" action="{{ route('login.postulante.submit') }}">

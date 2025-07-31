@@ -6,12 +6,16 @@
     <label class="block text-md font-normal mb-1">3. Tipo de reclamante <span class="text-red-700">*</span></label>
     <div class="mt-3 space-y-2">
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_reclamante" value="Persona Natural" class="form-radio text-[#E72352] w-5 h-5">
-            <span>Persona Natural</span>
+            <input type="radio" name="tipo_reclamante" value="Estudiante" class="form-radio text-[#E72352] w-5 h-5">
+            <span>Estudiante</span>
         </label>
         <label class="flex items-center space-x-2">
-            <input type="radio" name="tipo_reclamante" value="Persona Jurídica" class="form-radio text-[#E72352] w-5 h-5">
-            <span>Persona Jurídica</span>
+            <input type="radio" name="tipo_reclamante" value="Padre / Tutor o apoderado" class="form-radio text-[#E72352] w-5 h-5">
+            <span>Padre / Tutor o apoderado</span>
+        </label>
+        <label class="flex items-center space-x-2">
+            <input type="radio" name="tipo_reclamante" value="Usuario visitante" class="form-radio text-[#E72352] w-5 h-5">
+            <span>Usuario visitante</span>
         </label>
     </div>
 </div>
@@ -94,7 +98,7 @@
 <!-- Campo: Teléfono fijo -->
 <div>
     <label for="telefono" class="block text-md font-normal text-gray-800 mb-1">
-        8. Teléfono fijo <span class="text-red-700">*</span>
+        8. Teléfono fijo</span>
     </label>
 
     <input
