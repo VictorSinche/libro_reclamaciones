@@ -1,0 +1,22 @@
+
+CUENTAS GENERALES
+-----------------
+OSAR               | osar@uma.edu.pe                     | Os4r#92MuA@
+TESORERÍA          | tesoreria@uma.edu.pe                | Tes0r&78Uma!
+TI                 | helpdesk@uma.edu.pe                 | Ti_H3lpD#k99
+ADMISIÓN           | admision@uma.edu.pe                 | Adm!s10n_UMA22
+COA                | coacademica@uma.edu.pe              | CoAc@d#2025!
+
+DIRECCIÓN DE ESCUELA
+--------------------
+Administración y Negocios / Marketing    | christian.perez@uma.edu.pe         | Chr1st!4n_AdmMkt
+Contabilidad y Finanzas                  | marcelo.gonzales@uma.edu.pe        | MarC#F1n@2025
+Ingeniería de IA                         | freud.melgar@uma.edu.pe            | Fr3uD!AI_Uma
+Farmacia                                 | jhonnel.samaniego@uma.edu.pe       | Ph4rma#JhS@1
+Enfermería                               | roxana.purizaca@uma.edu.pe         | Enf3r#Rox@92
+Psicología                               | luis.luyo@uma.edu.pe               | Ps!c0l0g@Lu1s
+Nutrición y Dietética                    | ito.flores@uma.edu.pe              | Nutri#ItoF_07
+Tecnología Médica - Terapia Física       | carlos.villalta@uma.edu.pe         | TMRehab#Cvil_09
+Tecnología Médica - Lab Clínico y Anatomía | carlos.villalta@uma.edu.pe       | TMLab#Cvil_10
+
+ALegal#Cvil

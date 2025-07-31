@@ -9,27 +9,35 @@
 <div class="max-w-[100%] mx-auto">
     <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-xl bg-clip-border">
         <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
-            <div class="flex items-center justify-between ">
+            <div class="flex items-center justify-between flex-wrap gap-2">
                 <div>
-                    <h3 class="text-lg font-semibold text-slate-800">Lista de usurios</h3>
+                    <h3 class="text-lg font-semibold text-slate-800">Lista de usuarios</h3>
                     <p class="text-slate-500">Revisar a cada persona antes de editar</p>
-            </div>
-                <!-- Buscador -->
-                <div class="relative w-full max-w-xs mb-4">
-                    <input
-                        type="text"
-                        id="buscador"
-                        name="buscador"
-                        placeholder=" "
-                        class="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 text-sm text-blue-gray-700 outline-0 transition-all focus:border-2 focus:border-gray-900 placeholder-shown:border-blue-gray-200"
-                        oninput="filtrarTabla()"
-                    />
-                    <label
-                        for="buscador"
-                        class="pointer-events-none absolute left-0 -top-1.5 text-[11px] text-gray-500 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:left-3 peer-focus:text-[11px] peer-focus:top-0 peer-focus:left-0 peer-focus:text-gray-900"
-                    >
-                        Buscar usuario...
-                    </label>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <!-- Buscador -->
+                    <div class="relative w-full max-w-xs">
+                        <input
+                            type="text"
+                            id="buscador"
+                            name="buscador"
+                            placeholder=" "
+                            class="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 text-sm text-blue-gray-700 outline-0 transition-all focus:border-2 focus:border-gray-900 placeholder-shown:border-blue-gray-200"
+                            oninput="filtrarTabla()"
+                        />
+                        <label
+                            for="buscador"
+                            class="pointer-events-none absolute left-0 -top-1.5 text-[11px] text-gray-500 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-2.5 peer-placeholder-shown:left-3 peer-focus:text-[11px] peer-focus:top-0 peer-focus:left-0 peer-focus:text-gray-900"
+                        >
+                            Buscar usuario...
+                        </label>
+                    </div>
+
+                    <!-- Botón Añadir usuario -->
+                    <button id="btn-abrir-modal" class="bg-slate-800 text-white px-4 py-2 rounded-md text-sm hover:bg-slate-700">
+                        Añadir usuario
+                    </button>
                 </div>
             </div>
         </div>

@@ -12,9 +12,9 @@ class UsuarioSeeder extends Seeder
     {
         $usuarios = [
             ['nombre' => 'OSAR', 'apellidos' => 'OF.', 'email' => 'osar@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('osar132'), 'area_id' => 1],
-            ['nombre' => 'TESORERIA', 'apellidos' => 'OF.', 'email' => 'tesoreria@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('tesoreria123'), 'area_id' => 1],
-            ['nombre' => 'TI', 'apellidos' => 'OF.', 'email' => 'helpdesk@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('helpdesk123'), 'area_id' => 1],
-            ['nombre' => 'ADMISION', 'apellidos' => 'OF.', 'email' => 'admision@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('admision123'), 'area_id' => 1],
+            ['nombre' => 'TESORERIA', 'apellidos' => 'OF.', 'email' => 'tesoreria@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 2, 'password' => Hash::make('tesoreria123'), 'area_id' => 1],
+            ['nombre' => 'TI', 'apellidos' => 'OF.', 'email' => 'helpdesk@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 3, 'password' => Hash::make('helpdesk123'), 'area_id' => 1],
+            ['nombre' => 'ADMISION', 'apellidos' => 'OF.', 'email' => 'admision@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 4, 'password' => Hash::make('admision123'), 'area_id' => 1],
             ['nombre' => 'COA', 'apellidos' => 'OF.', 'email' => 'coacademica@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('coa123'), 'area_id' => 1],
             ['nombre' => 'Administración y Negocios', 'apellidos' => 'OF.', 'email' => 'christian.perez@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('adminnegocios123'), 'area_id' => 1],
             // ['nombre' => 'Administración y Marketing', 'apellidos' => 'OF.', 'email' => 'christian.perez@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('adminmarketing123'), 'area_id' => 1],
