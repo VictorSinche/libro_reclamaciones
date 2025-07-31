@@ -9,7 +9,7 @@ services:
     ports:
       - "7001:80"
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:cached
     depends_on:
       - libro_db
     command: ["/entrypoint.sh"]
