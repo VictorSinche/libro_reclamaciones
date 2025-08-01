@@ -24,7 +24,8 @@ class NotificarDerivacion extends Mailable
     {
         Log::debug('✉️ Construyendo correo para el reclamo de: ' . $this->reclamo->nombre_apellido);
         
-        return $this->subject('📩 Nueva derivación de hoja de reclamación')
+        return $this->from(config('mail.from.address'), 'Libro de Reclamaciones') // 👈 aquí lo fuerzas
+                    ->subject('📩 Nueva derivación de hoja de reclamación')
                     ->view('emails.derivacion_notificada');
     }
 }
