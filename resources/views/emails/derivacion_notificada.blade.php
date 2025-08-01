@@ -1,5 +1,3 @@
-<h2 style="font-size: 20px; font-weight: 600;">📩 Notificación de nueva hoja de reclamación derivada</h2>
-
 <p>Estimado(a),</p>
 
 <p>Se le informa que ha recibido una nueva hoja de reclamación asignada a su área para su atención correspondiente. A continuación, se detallan los datos principales del reclamo:</p>
