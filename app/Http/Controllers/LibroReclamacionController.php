@@ -181,13 +181,28 @@ class LibroReclamacionController extends Controller
 
     public function marcarComoAtendido($id)
     {
+        // 1. Buscar la derivación
         $derivacion = Derivacion::findOrFail($id);
-        $derivacion->estado = 2; // Marcar como completado
+        $derivacion->estado = 2;
         $derivacion->save();
+
+        // 2. Actualizar también el estado del libro de reclamaciones (si está relacionado)
+        if ($derivacion->libro_reclamacion_id) {
+            $libro = LibroReclamacion::find($derivacion->libro_reclamacion_id);
+            if ($libro) {
+                $libro->estado = 2; // También marcar como atendido
+                $libro->save();
+            }
+        }
+
+        // 3. Enviar correo de notificación
         $correoResponsable = config('mail.from.address') ?? 'notificaciones@uma.edu.pe';
         Mail::to($correoResponsable)->send(new InformeCompletado($derivacion));
-        return back()->with('success', '✅ Derivación marcada como atendida.');
+
+        // 4. Redireccionar con mensaje
+        return back()->with('success', '✅ Derivación y libro de reclamaciones marcados como atendidos.');
     }
+
 
     public function guardarInforme(Request $request)
     {
