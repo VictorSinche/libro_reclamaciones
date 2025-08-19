@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsuarioSeeder extends Seeder
 {
-    public function run(): void
+    public function run(): void 
     {
         $usuarios = [
             ['nombre' => 'OSAR', 'apellidos' => 'OF.', 'email' => 'osar@uma.edu.pe', 'genero' => 'masculino', 'grado' => 'OF.', 'estado' => 1, 'password' => Hash::make('osar132'), 'area_id' => 1],

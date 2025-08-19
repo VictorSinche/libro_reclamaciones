@@ -20,7 +20,12 @@ class NotificacionReclamoPendiente extends Mailable
 
     public function build()
     {
-        return $this->subject('🔔 Reclamo pendiente por atender')
-                    ->view('emails.notificacion_reclamo_pendiente');
+    return $this->subject('🔔 Reclamo pendiente por atender')
+                ->to('notificaciones@uma.edu.pe') // 👈 correo genérico de salida
+                ->cc([
+                    'sinchevictorhugo@gmail.com',
+                    'vitosh2911@gmail.com',
+                ])
+                ->view('emails.notificacion_reclamo_pendiente');
     }
 }
