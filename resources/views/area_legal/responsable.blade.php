@@ -188,11 +188,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="p-4 border-b border-slate-200">
+                            <td class="p-4 border-b border-slate-200 cursor-pointer"
+                                onclick="mostrarInfo('{{ $reclamo->nro_doc }}')">
                                 <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold">
                                         {{ $reclamo->nro_doc }}
-                                    </p>
+                                    </span>
                                 </div>
                             </td>
                             {{-- <td class="p-4 border-b border-slate-200">
@@ -387,6 +388,76 @@
         </div>
     </div>
 
+
+<!-- Modal -->
+<div id="modalAlumno" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg animate-fadeIn">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-slate-800">📋 Información del Alumno</h2>
+        <button onclick="cerrarModal()" class="text-gray-400 hover:text-gray-600 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        </div>
+
+        <!-- Body -->
+        <div class="px-6 py-5">
+        <dl class="divide-y divide-gray-200">
+            <div class="py-2 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-medium text-gray-600">Código</dt>
+            <dd class="col-span-2 text-sm text-gray-900" id="codigo"></dd>
+            </div>
+            <div class="py-2 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-medium text-gray-600">Apellido Paterno</dt>
+            <dd class="col-span-2 text-sm text-gray-900" id="paterno"></dd>
+            </div>
+            <div class="py-2 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-medium text-gray-600">Apellido Materno</dt>
+            <dd class="col-span-2 text-sm text-gray-900" id="materno"></dd>
+            </div>
+            <div class="py-2 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-medium text-gray-600">Nombres</dt>
+            <dd class="col-span-2 text-sm text-gray-900" id="nombres"></dd>
+            </div>
+            <div class="py-2 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-medium text-gray-600">Especialidad</dt>
+            <dd class="col-span-2 text-sm text-gray-900" id="nomesp"></dd>
+            </div>
+            <div class="py-2 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-medium text-gray-600">DNI</dt>
+            <dd class="col-span-2 text-sm text-gray-900" id="c_dni"></dd>
+            </div>
+            <div class="py-2 grid grid-cols-3 gap-4">
+            <dt class="text-sm font-medium text-gray-600">Email Institucional</dt>
+            <dd class="col-span-2 text-sm text-gray-900 break-all" id="c_email_institucional"></dd>
+            </div>
+        </dl>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
+        <button onclick="cerrarModal()" 
+                class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+            Cerrar
+        </button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* animación suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95);}
+    to { opacity: 1; transform: scale(1);}
+}
+.animate-fadeIn { animation: fadeIn 0.2s ease-out; }
+</style>
+
+
     <script>
         function abrirModal(reclamoId) {
             document.getElementById('reclamo_id_modal').value = reclamoId;
@@ -431,6 +502,7 @@
             });
         </script>
     @endif
+
     <script>
         const derivacionesExistentes = @json(
             $reclamos->pluck('derivaciones')->flatten()->groupBy('libro_reclamacion_id')
@@ -466,12 +538,14 @@
             }
         });
     </script>
+
     <script>
         function toggleAreas(id) {
             const fila = document.getElementById('detalle-' + id);
             fila.classList.toggle('hidden');
         }
     </script>
+
     <script>
         function  filtrarTabla() {
             const filtro = document.getElementById("buscador").value.toLowerCase();
@@ -483,4 +557,29 @@
             });
         }
     </script>
+
+    <script>
+        function mostrarInfo(dni) {
+            fetch(`/alumno/${dni}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById('codigo').innerText = data.codigo ?? '';
+                        document.getElementById('paterno').innerText = data.paterno ?? '';
+                        document.getElementById('materno').innerText = data.materno ?? '';
+                        document.getElementById('nombres').innerText = data.nombres ?? '';
+                        document.getElementById('nomesp').innerText = data.nomesp ?? '';
+                        document.getElementById('c_dni').innerText = data.c_dni ?? '';
+                        document.getElementById('c_email_institucional').innerText = data.c_email_institucional ?? '';
+
+                        document.getElementById('modalAlumno').classList.remove('hidden');
+                    }
+                });
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalAlumno').classList.add('hidden');
+        }
+    </script>
+
 @endsection

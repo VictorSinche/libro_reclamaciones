@@ -64,10 +64,7 @@ Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class,
 | Rutas de Menús y Submenús
 |--------------------------------------------------------------------------
 */
-// Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
-// Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
-Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
-Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
+Route::get('/alumno/{dni}', [LibroReclamacionController::class, 'buscar']);
 
 /*
 |--------------------------------------------------------------------------

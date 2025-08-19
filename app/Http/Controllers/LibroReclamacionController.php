@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use App\Helpers\PdfHelper;
 use App\Mail\InformeCompletado;
 use App\Mail\NotificarResponsableLibroReclamacion;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class LibroReclamacionController extends Controller
@@ -317,5 +318,40 @@ class LibroReclamacionController extends Controller
         ));
     }
 
+    public function buscar(string $dni): JsonResponse
+    {
+        // Sanitiza y valida sencillo (8 dígitos). Ajusta si tu dominio lo requiere.
+        $dni = trim($dni);
+        if (!preg_match('/^\d{8}$/', $dni)) {
+            return response()->json(['message' => 'DNI inválido'], 422);
+        }
+
+        try {
+            $alumno = DB::connection('mysql_sigu')
+                ->table('vw_datalu')
+                ->select(
+                    'codigo',
+                    'paterno',
+                    'materno',
+                    'nombres',
+                    'nomesp',
+                    'c_dni',
+                    'c_email_institucional'
+                )
+                ->where('c_dni', $dni)
+                ->first();
+
+            if (!$alumno) {
+                return response()->json(['message' => 'No encontrado'], 404);
+            }
+
+            return response()->json($alumno, 200);
+
+        } catch (\Throwable $e) {
+            // Log para auditoría
+            Log::error('Error consultando vw_datalu: '.$e->getMessage(), ['dni' => $dni]);
+            return response()->json(['message' => 'Error del servidor'], 500);
+        }
+    }
 }
 
