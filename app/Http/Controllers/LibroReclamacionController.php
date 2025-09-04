@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReclamosDerivadosPendInfExport;
+use App\Exports\ReclamosEnviadosExport;
+use App\Exports\ReclamosGeneralExport;
+use App\Exports\ReclamosInfCompletadoPendEnvioExport;
+use App\Exports\ReporteReclamosExport;
 use App\Models\Area;
 use Illuminate\Http\Request;
 use App\Models\LibroReclamacion;
@@ -17,6 +22,7 @@ use App\Mail\InformeCompletado;
 use App\Mail\NotificarResponsableLibroReclamacion;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LibroReclamacionController extends Controller
 {
@@ -215,6 +221,7 @@ class LibroReclamacionController extends Controller
         $derivacion = Derivacion::findOrFail($request->id);
         $derivacion->informe = $request->informe;
         $derivacion->estado = 1; // ✅ Marcar como atendido automáticamente
+        $derivacion->informe_completado_at = now();
         $derivacion->save();
 
         return back()->with('success', '✅ Informe guardado y derivación marcada como atendida.');
@@ -254,6 +261,13 @@ class LibroReclamacionController extends Controller
         // Guardamos solo la ruta relativa
         $reclamo->informe_responsable = "{$id}/{$fecha}/{$nombreArchivo}";
         $reclamo->save();
+
+        $derivacion = Derivacion::where('libro_reclamacion_id', $id)->latest()->first();
+        if ($derivacion) {
+            $derivacion->informe_completado_at = now(); // 👈 Marca también como completado
+            $derivacion->save();
+        }
+
 
         return back()->with('successdrift', '✅ Informe del responsable subido correctamente.');
     }
@@ -351,6 +365,36 @@ class LibroReclamacionController extends Controller
             // Log para auditoría
             Log::error('Error consultando vw_datalu: '.$e->getMessage(), ['dni' => $dni]);
             return response()->json(['message' => 'Error del servidor'], 500);
+        }
+    }
+
+    public function enviarAEstudiante($id)
+    {
+        $derivacion = Derivacion::with('libroReclamacion')->findOrFail($id);
+        $reclamo = $derivacion->libroReclamacion;
+
+        if (!$reclamo || !$reclamo->correo) {
+            return back()->with('error', '❌ No se encontró el correo del estudiante.');
+        }
+
+        if (!$reclamo->informe_responsable) {
+            return back()->with('error', '❌ No hay informe PDF disponible para enviar.');
+        }
+
+        try {
+            Mail::to($reclamo->correo)
+                ->send(new \App\Mail\InformeResueltoEstudiante($derivacion));
+
+            // 👇 Guardamos la fecha y hora de envío
+            $derivacion->informe_enviado_at = now();
+            $derivacion->save();
+
+            Log::info("📨 Informe enviado al estudiante {$reclamo->correo} para derivación #{$derivacion->id}");
+
+            return back()->with('success', '✅ Informe enviado correctamente al estudiante.');
+        } catch (\Throwable $e) {
+            Log::error("❌ Error al enviar el informe: " . $e->getMessage());
+            return back()->with('error', '❌ Ocurrió un error al enviar el informe.');
         }
     }
 }

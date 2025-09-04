@@ -25,9 +25,11 @@ class NotificarResponsableLibroReclamacion extends Mailable
         return $this->subject('📥 Nuevo reclamo ingresado - Libro de Reclamaciones')
                     ->to('notificaciones@uma.edu.pe') // 👈 correo genérico de salida
                     ->cc([
-                        'mesadepartes@uma.edu.pe',
-                        'yulan.cristobal@uma.edu.pe',
-                        'g.abarca.moran@gmail.com '
+                        // 'mesadepartes@uma.edu.pe',
+                        // 'yulan.cristobal@uma.edu.pe',
+                        // 'g.abarca.moran@gmail.com '
+                        'sinchevictorhugo@gmail.com',
+                        'vitosh2911@gmail.com'
                     ])
                     ->view('emails.responsable.reclamo')
                     ->with(['reclamo' => $this->reclamo]);

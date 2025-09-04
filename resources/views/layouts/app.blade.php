@@ -158,7 +158,7 @@
           </li>
           @endif
 
-          @if (tieneAlgunPermisoGlobal(['AL.1']))
+          @if (tieneAlgunPermisoGlobal(['AL.1', 'AL.2']))
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-arealegal" data-collapse-toggle="submenu-arealegal">
               
@@ -178,6 +178,16 @@
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                     {{ Request::routeIs('arealegal.libroRe') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     Libros de reclamaciones
+                  </a>              
+                </li>
+              @endif
+
+              @if (tienePermisoGlobal('AL.2'))
+                <li>
+                  <a href="{{ route('reporte.reporte') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('reporte.reporte') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Reportes
                   </a>              
                 </li>
               @endif

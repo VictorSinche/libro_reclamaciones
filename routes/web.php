@@ -7,6 +7,7 @@ use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
 use App\Http\Controllers\LibroReclamacionController;
 use App\Http\Controllers\PermisoPostulanteController;
+use App\Http\Controllers\ReporteReclamosController;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -49,6 +50,15 @@ Route::post('/derivacion/informe', [LibroReclamacionController::class, 'guardarI
 Route::get('/derivacion/{id}/informe/pdf', [LibroReclamacionController::class, 'descargarInformePDF'])->name('derivacion.informe_pdf');
 Route::post('/libro-reclamaciones/{id}/subir-informe', [LibroReclamacionController::class, 'subirInforme'])->name('libroreclamaciones.subirInforme');
 Route::post('/ckeditor/upload', [App\Http\Controllers\CKEditorController::class, 'upload']);
+
+Route::post('/derivacion/{id}/enviar-estudiante', [LibroReclamacionController::class, 'enviarAEstudiante'])
+    ->name('derivacion.enviar-estudiante');
+
+Route::get('/reporte', fn() => view('libro_reclamaciones.reportes.reporte_trazabilidad'))->name('reporte.reporte');
+Route::get('/general', [ReporteReclamosController::class, 'exportarGeneral'])->name('reclamos.export.general');
+Route::get('/derivados-pend-inf', [ReporteReclamosController::class, 'exportarDerivadosPendInf'])->name('reclamos.export.derivados_pend_inf');
+Route::get('/inf-completado-pend-envio', [ReporteReclamosController::class, 'exportarInfCompletadoPendEnvio'])->name('reclamos.export.inf_completado_pend_envio');
+Route::get('/enviados', [ReporteReclamosController::class, 'exportarEnviados'])->name('reclamos.export.enviados');
 
 /*
 |--------------------------------------------------------------------------

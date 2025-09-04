@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('archivo')->nullable();
             $table->longText('informe')->nullable(); // 👈 Este es el nuevo campo para redactar con el editor tipo Word
             $table->timestamp('fecha_derivacion')->useCurrent();
+            $table->timestamp('informe_completado_at')->nullable();
+            $table->timestamp('informe_enviado_at')->nullable();
             $table->timestamps();
         });
     }

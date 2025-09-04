@@ -242,33 +242,39 @@
                                     </span>
                                 @endif
                             </td>
+
                             <td class="p-4 border-b border-slate-200">
                                 {{-- Botón imprimir --}}
                                 <a href="{{ route('libro-reclamaciones.pdf', $reclamo->id) }}"
                                     title="Imprimir"
-                                    target="_black"
+                                    target="_blank"
                                     class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition">
                                     <i class="fa-solid fa-print"></i>
                                 </a>
+
                                 {{-- Botón ver áreas derivadas --}}
                                 <button onclick="toggleAreas({{ $reclamo->id }})"
                                     title="Ver áreas derivadas"
                                     class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-sky-600 hover:bg-sky-100 transition">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </button>
+
                                 {{-- Botón derivar --}}
                                 <a href="javascript:void(0)" title="Derivar" onclick="abrirModal({{ $reclamo->id }})"
                                     class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-orange-500 hover:bg-slate-900/10 transition">
                                     <i class="fas fa-share"></i>
                                 </a>
-                                {{-- Botón subir archivo --}}
+
+                                {{-- Botón subir o ver informe --}}
                                 @if (!$reclamo->informe_responsable)
-                                    {{-- Ícono para subir archivo --}}
+                                    {{-- Subir informe --}}
                                     <form action="{{ route('libroreclamaciones.subirInforme', $reclamo->id) }}"
-                                        method="POST" enctype="multipart/form-data" id="form-informe-{{ $reclamo->id }}" class="inline">
+                                        method="POST" enctype="multipart/form-data"
+                                        id="form-informe-{{ $reclamo->id }}" class="inline">
                                         @csrf
                                         <input type="file" name="informe_responsable" accept=".pdf,.doc,.docx"
-                                            onchange="document.getElementById('form-informe-{{ $reclamo->id }}').submit()" hidden id="archivo-{{ $reclamo->id }}">
+                                            onchange="document.getElementById('form-informe-{{ $reclamo->id }}').submit()"
+                                            hidden id="archivo-{{ $reclamo->id }}">
 
                                         <button type="button" title="Subir informe"
                                             class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-blue-600 hover:bg-blue-100 transition"
@@ -277,15 +283,33 @@
                                         </button>
                                     </form>
                                 @else
-                                    {{-- Ícono para ver archivo --}}
+                                    {{-- Ver informe --}}
                                     <a href="{{ asset('storage/informes_responsables/' . $reclamo->informe_responsable) }}"
                                         target="_blank"
                                         title="Ver informe subido"
-                                        class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-green-600 hover:bg-green-100 transition">
+                                        class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-red-600 hover:bg-red-100 transition">
                                         <i class="fa-solid fa-file-lines"></i>
                                     </a>
                                 @endif
+
+                                {{-- Botón enviar al estudiante --}}
+                                @if ($derivacion && $derivacion->informe)
+                                    <form action="{{ route('derivacion.enviar-estudiante', $derivacion->id) }}"
+                                        method="POST"
+                                        class="inline"
+                                        onsubmit="return confirm('¿Estás seguro de enviar el informe al estudiante?')">
+                                        @csrf
+                                        <button 
+                                            type="submit"
+                                            title="Enviar informe al estudiante"
+                                            class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-green-600 hover:bg-sky-100 transition">
+                                            <i class="fa-solid fa-user-graduate"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
+
+
                         </tr>
                         <!-- Fila desplegable de detalles -->
                         <tr id="detalle-{{ $reclamo->id }}" class="bg-gray-50 text-sm text-slate-700 hidden">
@@ -349,104 +373,117 @@
                     </a>
                 </div>
             </div>
+
+            {{-- <a href="{{ route('reporte.reclamos') }}"
+            class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-200"
+            target="_blank">
+            <i class="fa-solid fa-file-excel mr-2"></i>
+            Exportar Reporte de Reclamos
+            </a> --}}
+
         </div>
     </div>
     
     <!-- Modal Derivar -->
-    <div id="modal-derivar" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
-            <button onclick="cerrarModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">&times;</button>
-            <h2 class="text-xl font-bold text-[#880E4F] mb-4">Derivar Hoja de Reclamación</h2>
+    <div id="modal-derivar" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+        <h2 class="text-xl font-bold text-[#880E4F] mb-4">Derivar Hoja de Reclamación</h2>
 
-            <form id="form-derivar" method="POST" action="{{ route('derivar.reclamo') }}" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="reclamo_id" id="reclamo_id_modal">
+        <form id="form-derivar" method="POST" action="{{ route('derivar.reclamo') }}" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="reclamo_id" id="reclamo_id_modal">
 
-                <div class="mb-4">
-                    <label for="area_id" class="block font-semibold mb-1">Área destino:</label>
-                    <select name="area_id" id="area_id" required class="w-full border border-gray-300 rounded px-3 py-2">
-                        @foreach ($areas as $area)
-                            <option value="{{ $area->id }}">{{ $area->nombre }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-4">
-                    <label for="observaciones" class="block font-semibold mb-1">Observaciones:</label>
-                    <textarea name="observaciones" id="observaciones" rows="4" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Motivo o comentario adicional..."></textarea>
-                </div>
-
-                <div class="mb-4">
-                    <label for="archivo" class="block font-semibold mb-1">Adjuntar archivo:</label>
-                    <input type="file" name="archivo" id="archivo" class="w-full border border-gray-300 rounded px-3 py-2">
-                </div>
-
-                <div class="text-right">
-                    <button type="submit" class="bg-[#880E4F] text-white px-4 py-2 rounded hover:bg-[#6a0c3d]">Derivar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-<!-- Modal -->
-<div id="modalAlumno" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg animate-fadeIn">
-        
-        <!-- Header -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-slate-800">📋 Información del Alumno</h2>
-        <button onclick="cerrarModal()" class="text-gray-400 hover:text-gray-600 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
+        <div class="mb-4">
+            <label for="area_id" class="block font-semibold mb-1">Área destino:</label>
+            <select name="area_id" id="area_id" required class="w-full border border-gray-300 rounded px-3 py-2">
+            @foreach ($areas as $area)
+                <option value="{{ $area->id }}">{{ $area->nombre }}</option>
+            @endforeach
+            </select>
         </div>
 
-        <!-- Body -->
-        <div class="px-6 py-5">
-        <dl class="divide-y divide-gray-200">
-            <div class="py-2 grid grid-cols-3 gap-4">
-            <dt class="text-sm font-medium text-gray-600">Código</dt>
-            <dd class="col-span-2 text-sm text-gray-900" id="codigo"></dd>
-            </div>
-            <div class="py-2 grid grid-cols-3 gap-4">
-            <dt class="text-sm font-medium text-gray-600">Apellido Paterno</dt>
-            <dd class="col-span-2 text-sm text-gray-900" id="paterno"></dd>
-            </div>
-            <div class="py-2 grid grid-cols-3 gap-4">
-            <dt class="text-sm font-medium text-gray-600">Apellido Materno</dt>
-            <dd class="col-span-2 text-sm text-gray-900" id="materno"></dd>
-            </div>
-            <div class="py-2 grid grid-cols-3 gap-4">
-            <dt class="text-sm font-medium text-gray-600">Nombres</dt>
-            <dd class="col-span-2 text-sm text-gray-900" id="nombres"></dd>
-            </div>
-            <div class="py-2 grid grid-cols-3 gap-4">
-            <dt class="text-sm font-medium text-gray-600">Especialidad</dt>
-            <dd class="col-span-2 text-sm text-gray-900" id="nomesp"></dd>
-            </div>
-            <div class="py-2 grid grid-cols-3 gap-4">
-            <dt class="text-sm font-medium text-gray-600">DNI</dt>
-            <dd class="col-span-2 text-sm text-gray-900" id="c_dni"></dd>
-            </div>
-            <div class="py-2 grid grid-cols-3 gap-4">
-            <dt class="text-sm font-medium text-gray-600">Email Institucional</dt>
-            <dd class="col-span-2 text-sm text-gray-900 break-all" id="c_email_institucional"></dd>
-            </div>
-        </dl>
+        <div class="mb-4">
+            <label for="observaciones" class="block font-semibold mb-1">Observaciones:</label>
+            <textarea name="observaciones" id="observaciones" rows="4" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Motivo o comentario adicional..."></textarea>
         </div>
 
-        <!-- Footer -->
-        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
-        <button onclick="cerrarModal()" 
-                class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+        <div class="mb-4">
+            <label for="archivo" class="block font-semibold mb-1">Adjuntar archivo:</label>
+            <input type="file" name="archivo" id="archivo" class="w-full border border-gray-300 rounded px-3 py-2">
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2 border-t border-gray-200">
+            <button type="button"
+                    onclick="cerrarModalDerivar()"
+                    class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
             Cerrar
-        </button>
+            </button>
+
+            <button type="submit" class="bg-[#880E4F] text-white px-4 py-2 rounded hover:bg-[#6a0c3d]">
+            Derivar
+            </button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div id="modalAlumno" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg animate-fadeIn">
+            
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <h2 class="text-xl font-semibold text-slate-800">📋 Información del Alumno</h2>
+            <button onclick="cerrarModal()" class="text-gray-400 hover:text-gray-600 transition">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            </div>
+
+            <!-- Body -->
+            <div class="px-6 py-5">
+            <dl class="divide-y divide-gray-200">
+                <div class="py-2 grid grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-600">Código</dt>
+                <dd class="col-span-2 text-sm text-gray-900" id="codigo"></dd>
+                </div>
+                <div class="py-2 grid grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-600">Apellido Paterno</dt>
+                <dd class="col-span-2 text-sm text-gray-900" id="paterno"></dd>
+                </div>
+                <div class="py-2 grid grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-600">Apellido Materno</dt>
+                <dd class="col-span-2 text-sm text-gray-900" id="materno"></dd>
+                </div>
+                <div class="py-2 grid grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-600">Nombres</dt>
+                <dd class="col-span-2 text-sm text-gray-900" id="nombres"></dd>
+                </div>
+                <div class="py-2 grid grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-600">Especialidad</dt>
+                <dd class="col-span-2 text-sm text-gray-900" id="nomesp"></dd>
+                </div>
+                <div class="py-2 grid grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-600">DNI</dt>
+                <dd class="col-span-2 text-sm text-gray-900" id="c_dni"></dd>
+                </div>
+                <div class="py-2 grid grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-600">Email Institucional</dt>
+                <dd class="col-span-2 text-sm text-gray-900 break-all" id="c_email_institucional"></dd>
+                </div>
+            </dl>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <button onclick="cerrarModalAlumno()" 
+                    class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                Cerrar
+            </button>
+            </div>
         </div>
     </div>
-</div>
 
 <style>
 /* animación suave */
@@ -457,17 +494,17 @@
 .animate-fadeIn { animation: fadeIn 0.2s ease-out; }
 </style>
 
-
-    <script>
-        function abrirModal(reclamoId) {
-            document.getElementById('reclamo_id_modal').value = reclamoId;
-            document.getElementById('modal-derivar').classList.remove('hidden');
-        }
-
-        function cerrarModal() {
-            document.getElementById('modal-derivar').classList.add('hidden');
-        }
-    </script>
+<script>
+    function abrirModal(reclamoId) {
+        document.getElementById('reclamo_id_modal').value = reclamoId;
+        document.getElementById('modal-derivar').classList.remove('hidden');
+    }
+    function cerrarModalDerivar() {
+        document.getElementById('modal-derivar').classList.add('hidden');
+    }
+    function cerrarModalAlumno(){ 
+        document.getElementById('modalAlumno').classList.add('hidden'); }
+</script>
 
     @if(session('success'))
         <script>
