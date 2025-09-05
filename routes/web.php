@@ -35,30 +35,56 @@ Route::middleware('auth.admin')->group(function () {
 | Rutas de Administración
 |--------------------------------------------------------------------------
 */
-Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
-Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
-Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
-Route::get('/listlibro', [LibroReclamacionController::class, 'listarLibroRe'])->name('arealegal.libroRe');
-Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 'descargarPDF'])->name('libro-reclamaciones.pdf');
-Route::post('/derivar-reclamo', [LibroReclamacionController::class, 'guardarDerivacion'])->name('derivar.reclamo');
-Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+// ==================== DIRECTOR ====================
+Route::get('/convalidacion', fn() => view('director.convalidacion'))
+    ->name('director.convalidacion');
 
-Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])->name('derivaciones.mis_derivaciones');
+// ==================== ADMISIÓN ====================
+Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])
+    ->name('admision.historialDj');
+Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])
+    ->name('admision.listpostulante');
+Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])
+    ->name('exceldj');
 
-Route::post('/derivaciones/{id}/completar', [LibroReclamacionController::class, 'marcarComoAtendido'])->name('derivacion.completar');
-Route::post('/derivacion/informe', [LibroReclamacionController::class, 'guardarInforme'])->name('derivacion.guardar_informe');
-Route::get('/derivacion/{id}/informe/pdf', [LibroReclamacionController::class, 'descargarInformePDF'])->name('derivacion.informe_pdf');
-Route::post('/libro-reclamaciones/{id}/subir-informe', [LibroReclamacionController::class, 'subirInforme'])->name('libroreclamaciones.subirInforme');
-Route::post('/ckeditor/upload', [App\Http\Controllers\CKEditorController::class, 'upload']);
+// ==================== LIBRO DE RECLAMACIONES ====================
+Route::get('/listlibro', [LibroReclamacionController::class, 'listarLibroRe'])
+    ->name('arealegal.libroRe');
 
+// PDF y archivos
+Route::get('/libro-reclamaciones/pdf/{id}', [LibroReclamacionController::class, 'descargarPDF'])
+    ->name('libro-reclamaciones.pdf');
+Route::post('/libro-reclamaciones/{id}/subir-informe', [LibroReclamacionController::class, 'subirInforme'])
+    ->name('libroreclamaciones.subirInforme');
+
+// Derivaciones
+Route::post('/derivar-reclamo', [LibroReclamacionController::class, 'guardarDerivacion'])
+    ->name('derivar.reclamo');
+Route::get('/mis-derivaciones', [LibroReclamacionController::class, 'verPorArea'])
+    ->name('derivaciones.mis_derivaciones');
+Route::post('/derivaciones/{id}/completar', [LibroReclamacionController::class, 'marcarComoAtendido'])
+    ->name('derivacion.completar');
+Route::post('/derivacion/informe', [LibroReclamacionController::class, 'guardarInforme'])
+    ->name('derivacion.guardar_informe');
+Route::get('/derivacion/{id}/informe/pdf', [LibroReclamacionController::class, 'descargarInformePDF'])
+    ->name('derivacion.informe_pdf');
 Route::post('/derivacion/{id}/enviar-estudiante', [LibroReclamacionController::class, 'enviarAEstudiante'])
     ->name('derivacion.enviar-estudiante');
 
-Route::get('/reporte', fn() => view('libro_reclamaciones.reportes.reporte_trazabilidad'))->name('reporte.reporte');
-Route::get('/general', [ReporteReclamosController::class, 'exportarGeneral'])->name('reclamos.export.general');
-Route::get('/derivados-pend-inf', [ReporteReclamosController::class, 'exportarDerivadosPendInf'])->name('reclamos.export.derivados_pend_inf');
-Route::get('/inf-completado-pend-envio', [ReporteReclamosController::class, 'exportarInfCompletadoPendEnvio'])->name('reclamos.export.inf_completado_pend_envio');
-Route::get('/enviados', [ReporteReclamosController::class, 'exportarEnviados'])->name('reclamos.export.enviados');
+// ==================== CKEDITOR ====================
+Route::post('/ckeditor/upload', [App\Http\Controllers\CKEditorController::class, 'upload']);
+
+// ==================== REPORTES ====================
+Route::get('/reporte', fn() => view('libro_reclamaciones.reportes.reporte_trazabilidad'))
+    ->name('reporte.reporte');
+Route::get('/general', [ReporteReclamosController::class, 'exportarGeneral'])
+    ->name('reclamos.export.general');
+Route::get('/derivados-pend-inf', [ReporteReclamosController::class, 'exportarDerivadosPendInf'])
+    ->name('reclamos.export.derivados_pend_inf');
+Route::get('/inf-completado-pend-envio', [ReporteReclamosController::class, 'exportarInfCompletadoPendEnvio'])
+    ->name('reclamos.export.inf_completado_pend_envio');
+Route::get('/enviados', [ReporteReclamosController::class, 'exportarEnviados'])
+    ->name('reclamos.export.enviados');
 
 /*
 |--------------------------------------------------------------------------
