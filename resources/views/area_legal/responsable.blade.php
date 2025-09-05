@@ -270,7 +270,8 @@
                                     {{-- Subir informe --}}
                                     <form action="{{ route('libroreclamaciones.subirInforme', $reclamo->id) }}"
                                         method="POST" enctype="multipart/form-data"
-                                        id="form-informe-{{ $reclamo->id }}" class="inline">
+                                        id="form-informe-{{ $reclamo->id }}" class="inline"
+                                        onsubmit="mostrarLoader()">
                                         @csrf
                                         <input type="file" name="informe_responsable" accept=".pdf,.doc,.docx"
                                             onchange="document.getElementById('form-informe-{{ $reclamo->id }}').submit()"
@@ -494,17 +495,17 @@
 .animate-fadeIn { animation: fadeIn 0.2s ease-out; }
 </style>
 
-<script>
-    function abrirModal(reclamoId) {
-        document.getElementById('reclamo_id_modal').value = reclamoId;
-        document.getElementById('modal-derivar').classList.remove('hidden');
-    }
-    function cerrarModalDerivar() {
-        document.getElementById('modal-derivar').classList.add('hidden');
-    }
-    function cerrarModalAlumno(){ 
-        document.getElementById('modalAlumno').classList.add('hidden'); }
-</script>
+    <script>
+        function abrirModal(reclamoId) {
+            document.getElementById('reclamo_id_modal').value = reclamoId;
+            document.getElementById('modal-derivar').classList.remove('hidden');
+        }
+        function cerrarModalDerivar() {
+            document.getElementById('modal-derivar').classList.add('hidden');
+        }
+        function cerrarModalAlumno(){ 
+            document.getElementById('modalAlumno').classList.add('hidden'); }
+    </script>
 
     @if(session('success'))
         <script>
