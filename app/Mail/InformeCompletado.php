@@ -22,9 +22,12 @@ class InformeCompletado extends Mailable
     {
         return $this->subject('✅ Informe completado del Libro de Reclamaciones')
                     ->cc([
-                        'mesadepartes@uma.edu.pe',
-                        'yulan.cristobal@uma.edu.pe',
-                        'g.abarca.moran@gmail.com '                        
+                        // 'mesadepartes@uma.edu.pe',
+                        // 'yulan.cristobal@uma.edu.pe',
+                        // 'g.abarca.moran@gmail.com '
+                    'sinchevictorhugo@gmail.com',
+                    'vitosh2911@gmail.com',
+                    'victor.sinche@uma.edu.pe'
                     ])
                     ->view('emails.informe_completado')
                     ->with([
