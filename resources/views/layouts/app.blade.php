@@ -1,102 +1,102 @@
-{{-- Solución alternativa: carga directa del CSS y JS compilados --}}
-@php
-    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-@endphp
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
-<link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
-<script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
+  @php
+      $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+  @endphp
 
-
-<link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
-<title>UMA | INFORMES</title>
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- CDN Tom Select -->
-<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
-<!-- En tu layout Blade (layouts/app.blade.php) -->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-<!-- Loader Global con Imagen -->
-<div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
-  <!-- Imagen arriba -->
-  <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
-  
-  <!-- Loader animado -->
-  <div class="loader"></div>
-  
-  <!-- Texto -->
-  <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
-</div>
-
-<style>
-.loader {
-  width: 120px;
-  height: 22px;
-  border-radius: 20px;
-  color: #e72352;
-  border: 2px solid;
-  position: relative;
-}
-.loader::before {
-  content: "";
-  position: absolute;
-  margin: 2px;
-  inset: 0 100% 0 0;
-  border-radius: inherit;
-  background: currentColor;
-  animation: l6 2s infinite;
-}
-@keyframes l6 {
-  100% { inset: 0 }
-}
-</style>
+  <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+  <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
 
 
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-    <div class="px-3 py-3 lg:px-5 lg:pl-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center justify-start rtl:justify-end">
-          <a href="https://uma.edu.pe" class="flex ms-2 md:me-24" target="black">
-            <img src="/uma/img/logo-uma.ico" class="h-8 me-3" alt="FlowBite Logo" />
-            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">UMA</span>
-          </a>
-        </div>
-        <div class="flex items-center">
-          <div class="relative ms-3">
-            <div>
-              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                <span class="sr-only">Abrir el menú de usuario</span>
-                <img class="w-8 h-8 rounded-full" src="{{ asset('uma/img/students.png') }}" alt="user photo">
-              </button>
-            </div>
-            <!-- Menú de usuario -->
-            <div id="dropdown-user" class="absolute right-0 z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow dark:bg-gray-700 dark:divide-gray-600">
-              <div class="px-4 py-3" role="none">
-                <p class="text-sm text-gray-900 dark:text-white" role="none">
-                  {{ Str::title(session('nombre_completo') ?? 'Postulante') }}
-                </p>
-                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                  {{ session('correo') ?? 'correo@ejemplo.com' }}
-                </p>
+  <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
+  <title>UMA | INFORMES</title>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- CDN Tom Select -->
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+  <!-- En tu layout Blade (layouts/app.blade.php) -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+  <style>
+  .loader {
+    width: 120px;
+    height: 22px;
+    border-radius: 20px;
+    color: #e72352;
+    border: 2px solid;
+    position: relative;
+  }
+  .loader::before {
+    content: "";
+    position: absolute;
+    margin: 2px;
+    inset: 0 100% 0 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: l6 2s infinite;
+  }
+  @keyframes l6 {
+    100% { inset: 0 }
+  }
+  </style>
+</head>
+
+<body>
+
+  <div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
+    <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />    
+    <div class="loader"></div>
+    <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
+  </div>
+
+  <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+      <div class="px-3 py-3 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center justify-start rtl:justify-end">
+            <a href="https://uma.edu.pe" class="flex ms-2 md:me-24" target="black">
+              <img src="/uma/img/logo-uma.ico" class="h-8 me-3" alt="FlowBite Logo" />
+              <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">UMA</span>
+            </a>
+          </div>
+          <div class="flex items-center">
+            <div class="relative ms-3">
+              <div>
+                <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                  <span class="sr-only">Abrir el menú de usuario</span>
+                  <img class="w-8 h-8 rounded-full" src="{{ asset('uma/img/students.png') }}" alt="user photo">
+                </button>
               </div>
-              <ul class="py-1" role="none">
-                <li>
-                  <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
-                      <i class="fa-solid fa-right-from-bracket mr-2"></i> Cerrar sesión
-                    </button>
-                  </form>
-                </li>
-              </ul>
+              <!-- Menú de usuario -->
+              <div id="dropdown-user" class="absolute right-0 z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow dark:bg-gray-700 dark:divide-gray-600">
+                <div class="px-4 py-3" role="none">
+                  <p class="text-sm text-gray-900 dark:text-white" role="none">
+                    {{ Str::title(session('nombre_completo') ?? 'Postulante') }}
+                  </p>
+                  <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                    {{ session('correo') ?? 'correo@ejemplo.com' }}
+                  </p>
+                </div>
+                <ul class="py-1" role="none">
+                  <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                      @csrf
+                      <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
+                        <i class="fa-solid fa-right-from-bracket mr-2"></i> Cerrar sesión
+                      </button>
+                    </form>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-</nav>
+  </nav>
   
   <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
@@ -619,3 +619,4 @@
       });
     });
   </script>
+</body>
