@@ -24,12 +24,13 @@ class InformeCompletado extends Mailable
                     ->cc([
                         'mesadepartes@uma.edu.pe',
                         'yulan.cristobal@uma.edu.pe',
-                        'g.abarca.moran@gmail.com '
-                    // 'sinchevictorhugo@gmail.com',
-                    // 'vitosh2911@gmail.com',
-                    // 'victor.sinche@uma.edu.pe'
+                        'g.abarca.moran@gmail.com',
+                        'sinchevictorhugo@gmail.com',
+                        'vitosh2911@gmail.com',
+                        'victor.sinche@uma.edu.pe',
+                        'sistemas@uma.edu.pe'
                     ])
-                    ->view('emails.informe_completado')
+                    ->view('emails.informe_completado|')
                     ->with([
                         'derivacion' => $this->derivacion,
                         'responsable' => $this->derivacion->responsable,

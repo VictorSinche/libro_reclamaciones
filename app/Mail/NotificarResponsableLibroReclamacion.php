@@ -27,9 +27,10 @@ class NotificarResponsableLibroReclamacion extends Mailable
                     ->cc([
                         'mesadepartes@uma.edu.pe',
                         'yulan.cristobal@uma.edu.pe',
-                        'g.abarca.moran@gmail.com '
-                        // 'sinchevictorhugo@gmail.com',
-                        // 'vitosh2911@gmail.com'
+                        'g.abarca.moran@gmail.com ',
+                        'sinchevictorhugo@gmail.com',
+                        'vitosh2911@gmail.com',
+                        'sistemas@uma.edu.pe',
                     ])
                     ->view('emails.responsable.reclamo')
                     ->with(['reclamo' => $this->reclamo]);
