@@ -26,8 +26,8 @@ class InformeCompletado extends Mailable
                         'yulan.cristobal@uma.edu.pe',
                         'g.abarca.moran@gmail.com',
                         'sinchevictorhugo@gmail.com',
-                        'vitosh2911@gmail.com',
-                        'victor.sinche@uma.edu.pe',
+                        // 'vitosh2911@gmail.com',
+                        // 'victor.sinche@uma.edu.pe',
                         'sistemas@uma.edu.pe'
                     ])
                     ->view('emails.informe_completado|')
