@@ -62,30 +62,38 @@ class LibroReclamacionController extends Controller
 
         $correoReclamante = $reclamo->correo;
         $correoResponsable = config('mail.from.address') ?? 'notificaciones@uma.edu.pe';
+        $correosEnviados = true;
 
         try {
-            // Enviar al reclamante
             Mail::to($correoReclamante)
                 ->send(new ConfirmarRecepcionReclamo($reclamo));
             Log::debug("✅ Correo enviado al reclamante: $correoReclamante");
+        } catch (\Throwable $e) {
+            $correosEnviados = false;
+            Log::error("❌ Error al enviar correo al reclamante ($correoReclamante) para reclamo #{$reclamo->id}: [" . get_class($e) . '] ' . $e->getMessage());
+        }
 
-            // Enviar al responsable
+        try {
             Mail::to($correoResponsable)
                 ->send(new NotificarResponsableLibroReclamacion($reclamo));
             Log::debug("✅ Correo enviado al responsable: $correoResponsable");
-
         } catch (\Throwable $e) {
-            Log::error('❌ Error al enviar correos: ' . $e->getMessage());
+            $correosEnviados = false;
+            Log::error("❌ Error al enviar correo al responsable ($correoResponsable) para reclamo #{$reclamo->id}: [" . get_class($e) . '] ' . $e->getMessage());
         }
 
-        return redirect()->back()->with('success', '✅ Reclamo registrado correctamente y correos enviados.');
+        $mensaje = $correosEnviados
+            ? '✅ Reclamo registrado correctamente y correos enviados.'
+            : '✅ Reclamo registrado correctamente. Hubo un problema enviando la notificación por correo, pero tu reclamo ya quedó guardado.';
+
+        return redirect()->back()->with('success', $mensaje);
     }
 
     
     public function listarLibroRe(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'fecha_evento');
+        $sort = $request->input('sort', 'created_at');
         $direction = $request->input('direction', 'desc');
 
         $areas = Area::all();
@@ -178,7 +186,7 @@ class LibroReclamacionController extends Controller
             ->get();
         
         $reclamos = \App\Models\LibroReclamacion::with('ultimaDerivacion.area') // ← esta línea es clave
-            ->orderBy('fecha_evento', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         $areas = Area::all();
@@ -269,7 +277,7 @@ class LibroReclamacionController extends Controller
         }
 
 
-        return back()->with('successdrift', '✅ Informe del responsable subido correctamente.');
+        return back()->with('success', '✅ Informe del responsable subido correctamente.');
     }
 
     public function dashboard()

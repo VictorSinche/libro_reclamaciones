@@ -30,7 +30,7 @@ class InformeCompletado extends Mailable
                         // 'victor.sinche@uma.edu.pe',
                         'sistemas@uma.edu.pe'
                     ])
-                    ->view('emails.informe_completado|')
+                    ->view('emails.informe_completado')
                     ->with([
                         'derivacion' => $this->derivacion,
                         'responsable' => $this->derivacion->responsable,

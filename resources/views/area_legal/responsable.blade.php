@@ -15,7 +15,7 @@
         $isIdSort = $sort === 'id';
         $isNombreSort = $sort === 'nombre_apellido';
         $isReclamoSort = $sort === 'tipo_reclamo_queja';
-        $isIdFech = $sort === 'fecha_evento';
+        $isIdFech = $sort === 'created_at';
         $isIdEstado = $sort === 'estado';
 
         $directionId = $isIdSort ? $direction : 'asc';
@@ -131,9 +131,9 @@
                         </th>
                         <th
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <a href="?sort=fecha_evento&direction={{ nextDirection('fecha_evento', $sort, $direction) }}"
+                            <a href="?sort=created_at&direction={{ nextDirection('created_at', $sort, $direction) }}"
                             class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                            Fecha del evento
+                            Fecha de creación
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke-width="2"
                                 stroke="currentColor" aria-hidden="true"
@@ -213,7 +213,7 @@
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
                                     <p class="text-sm font-semibold text-slate-700">
-                                        {{ \Carbon\Carbon::parse($reclamo->fecha_evento)->format('d/m/Y') }}
+                                        {{ \Carbon\Carbon::parse($reclamo->created_at)->format('d/m/Y') }}
                                     </p>
                                 </div>
                             </td>
